@@ -51,33 +51,33 @@ namespace SinoTunnel
 
                 center_point = rf.properties.center_point;
 
-                // 培文改寫
-                foreach(IList<data_object> data_list in all_data_list) // 軌道線形
-                {
-                    for (int i = 0; i < data_list.Count; i++)
-                    {
-                        try { Line line = Line.CreateBound(data_list[i].start_point, data_list[i + 1].start_point); curves.Add(line); }
-                        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
-                    }
-                }
-                foreach (IList<data_object> data_list_tunnel in all_data_list_tunnel) // 隧道線形
-                {
-                    for (int i = 0; i < data_list_tunnel.Count; i++)
-                    {
-                        try { Line line = Line.CreateBound(data_list_tunnel[i].start_point, data_list_tunnel[i + 1].start_point); curves.Add(line); }
-                        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
-                    }
-                }
-                using (Transaction trans = new Transaction(doc, "畫線"))
-                {
-                    trans.Start();
-                    foreach (Curve curve in curves)
-                    {
-                        try { DrawLine(doc, curve); }
-                        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
-                    }
-                    trans.Commit();
-                }
+                //// 培文改寫
+                //foreach(IList<data_object> data_list in all_data_list) // 軌道線形
+                //{
+                //    for (int i = 0; i < data_list.Count; i++)
+                //    {
+                //        try { Line line = Line.CreateBound(data_list[i].start_point, data_list[i + 1].start_point); curves.Add(line); }
+                //        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+                //    }
+                //}
+                //foreach (IList<data_object> data_list_tunnel in all_data_list_tunnel) // 隧道線形
+                //{
+                //    for (int i = 0; i < data_list_tunnel.Count; i++)
+                //    {
+                //        try { Line line = Line.CreateBound(data_list_tunnel[i].start_point, data_list_tunnel[i + 1].start_point); curves.Add(line); }
+                //        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+                //    }
+                //}
+                //using (Transaction trans = new Transaction(doc, "畫線"))
+                //{
+                //    trans.Start();
+                //    foreach (Curve curve in curves)
+                //    {
+                //        try { DrawLine(doc, curve); }
+                //        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+                //    }
+                //    trans.Commit();
+                //}
 
                 for (int times = 0; times < all_data_list.Count; times++)
                 {
