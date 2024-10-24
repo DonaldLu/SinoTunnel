@@ -209,8 +209,7 @@ namespace SinoTunnel
 
                                 //Plane geometryPlane =  Plane.CreateByThreePoints(path.GetEndPoint(0), path.GetEndPoint(1), (path.GetEndPoint(0) + new XYZ(1,1,1)));
 
-                                //SketchPlane sketchPlane = Sketch_plain(doc, data_list[i - 1].start_point, data_list[i].start_point);
-                                SketchPlane sketchPlane = SP(doc, data_list[i - 1].start_point, data_list[i].start_point); // 培文改寫
+                                SketchPlane sketchPlane = Sketch_plain(doc, data_list[i - 1].start_point, data_list[i].start_point);
                                 subtran.Commit();
                                 subtran.Start();
                                 SweptBlend Blend = doc.FamilyCreate.NewSweptBlend(isSolid, t_path, sketchPlane, Profile_bottom, Profile_top);
@@ -319,8 +318,7 @@ namespace SinoTunnel
                     {
                         subtran.Start();
                         Line n_single_path = Line.CreateBound(data_list[i - 1].start_point, data_list[i].start_point);
-                        //SketchPlane temp_plane = Sketch_plain(doc, data_list[i].start_point, data_list[i - 1].start_point);
-                        SketchPlane temp_plane = SP(doc, data_list[i].start_point, data_list[i - 1].start_point); // 培文改寫
+                        SketchPlane temp_plane = Sketch_plain(doc, data_list[i].start_point, data_list[i - 1].start_point);
                         subtran.Commit();
                         subtran.Start();
 
@@ -647,34 +645,25 @@ namespace SinoTunnel
             }
         }
 
+        //// 台大
+        //public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
+        //{
+        //    SketchPlane sk = null;
+        //    XYZ v = end - start;
+        //    double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
+        //    XYZ w = (dxy > 0.00000001) ? XYZ.BasisY : XYZ.BasisZ;
+        //    XYZ norm = v.CrossProduct(w).Normalize();
+        //    Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
+        //    sk = SketchPlane.Create(doc, geomPlane);
+
+        //    return sk;
+        //}
+
+        // 培文改寫
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {
             SketchPlane sk = null;
-
             XYZ v = end - start;
-
-            double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
-
-            XYZ w = (dxy > 0.00000001)
-                ? XYZ.BasisY
-                : XYZ.BasisZ;
-
-            XYZ norm = v.CrossProduct(w).Normalize();
-
-            Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
-
-            sk = SketchPlane.Create(doc, geomPlane);
-
-            return sk;
-        }
-
-        // 培文改寫
-        public SketchPlane SP(Document doc, XYZ start, XYZ end)
-        {
-            SketchPlane sk = null;
-
-            XYZ v = end - start;
-
             double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
 
             XYZ w = XYZ.BasisZ;

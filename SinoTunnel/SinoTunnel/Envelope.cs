@@ -185,23 +185,15 @@ namespace SinoTunnel
                 }
             }
         }
-
+        // 台大
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {
             SketchPlane sk = null;
-
             XYZ v = end - start;
-
             double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
-
-            XYZ w = (dxy > 0.00000001)
-              ? XYZ.BasisY
-              : XYZ.BasisZ;
-
+            XYZ w = (dxy > 0.00000001) ? XYZ.BasisY : XYZ.BasisZ;
             XYZ norm = v.CrossProduct(w).Normalize();
-
             Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
-
             sk = SketchPlane.Create(doc, geomPlane);
 
             return sk;
@@ -210,9 +202,7 @@ namespace SinoTunnel
         public SketchPlane SP(Document doc, XYZ start, XYZ end)
         {
             SketchPlane sk = null;
-
             XYZ v = end - start;
-
             double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
 
             XYZ w = XYZ.BasisZ;

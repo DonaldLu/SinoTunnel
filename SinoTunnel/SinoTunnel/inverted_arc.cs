@@ -305,8 +305,7 @@ namespace SinoTunnel
                             SweepProfile sweepProfile_top = edit_doc.Application.Create.NewFamilySymbolProfile(start_famsy);
                             SweepProfile sweepProfile_bottom = edit_doc.Application.Create.NewFamilySymbolProfile(end_famsy);
 
-                            //SketchPlane sketchPlane = Sketch_plain(edit_doc, all_data_list_tunnel[times][i - 1].start_point, all_data_list_tunnel[times][i].start_point);
-                            SketchPlane sketchPlane = SP(edit_doc, all_data_list_tunnel[times][i - 1].start_point, all_data_list_tunnel[times][i].start_point);
+                            SketchPlane sketchPlane = Sketch_plain(edit_doc, all_data_list_tunnel[times][i - 1].start_point, all_data_list_tunnel[times][i].start_point);
                             SweptBlend sweptBlend = edit_doc.FamilyCreate.NewSweptBlend(isSolid, path, sketchPlane, sweepProfile_bottom, sweepProfile_top);
                             //if (Math.Round(path.Direction.Z, 5) != 0)
                             //{
@@ -327,14 +326,14 @@ namespace SinoTunnel
                             XYZ new_start = all_data_list[times][i].start_point - single_path.Length * single_path.Direction;
                             XYZ new_end = all_data_list[times][i - 1].start_point + single_path.Length * single_path.Direction;
                             Line n_single_path = Line.CreateBound(new_start, new_end);
-                            ModelCurve m_curve = edit_doc.FamilyCreate.NewModelCurve(n_single_path, SP(edit_doc, all_data_list[times][i].start_point, all_data_list[times][i - 1].start_point));
+                            ModelCurve m_curve = edit_doc.FamilyCreate.NewModelCurve(n_single_path, Sketch_plain(edit_doc, all_data_list[times][i].start_point, all_data_list[times][i - 1].start_point));
                             mc_list.Add(m_curve.Id);
                             multi_path.Append(m_curve.GeometryCurve.Reference);
 
                             XYZ new_start_tunnel = all_data_list_tunnel[times][i].start_point - single_path_tunnel.Length * single_path_tunnel.Direction;
                             XYZ new_end_tunnel = all_data_list_tunnel[times][i - 1].start_point + single_path_tunnel.Length * single_path_tunnel.Direction;
                             Line n_single_path_tunnel = Line.CreateBound(new_start_tunnel, new_end_tunnel);
-                            ModelCurve m_curve_tunnel = edit_doc.FamilyCreate.NewModelCurve(n_single_path_tunnel, SP(edit_doc, all_data_list_tunnel[times][i].start_point, all_data_list_tunnel[times][i - 1].start_point));
+                            ModelCurve m_curve_tunnel = edit_doc.FamilyCreate.NewModelCurve(n_single_path_tunnel, Sketch_plain(edit_doc, all_data_list_tunnel[times][i].start_point, all_data_list_tunnel[times][i - 1].start_point));
                             mc_list.Add(m_curve_tunnel.Id);
                             multi_path_tunnel.Append(m_curve_tunnel.GeometryCurve.Reference);
 
@@ -514,8 +513,7 @@ namespace SinoTunnel
                                                             (x => x.Name == "標準排水溝蓋板").First();
                                     input_properties(fms_2, rf.properties);
                                     SweepProfile sweepProfile_2 = edit_doc.Application.Create.NewFamilySymbolProfile(fms_2);
-                                    //SketchPlane sketchPlane_2 = Sketch_plain(edit_doc, all_data_list[times][i].start_point, all_data_list[times][i - 1].start_point);
-                                    SketchPlane sketchPlane_2 = SP(edit_doc, all_data_list[times][i].start_point, all_data_list[times][i - 1].start_point); // 培文改寫
+                                    SketchPlane sketchPlane_2 = Sketch_plain(edit_doc, all_data_list[times][i].start_point, all_data_list[times][i - 1].start_point);
                                     SweptBlend sweptBlend_2 = edit_doc.FamilyCreate.NewSweptBlend(isSolid, single_path, sketchPlane_2, sweepProfile_2, sweepProfile_2);
                                     // 培文改寫
                                     sweptBlend_2.get_Parameter(BuiltInParameter.PROFILE1_ANGLE).Set((Math.PI / 180) * -90);
@@ -577,8 +575,7 @@ namespace SinoTunnel
 
                         SweepProfile sweepProfile = edit_doc.Application.Create.NewFamilySymbolProfile(fms);
 
-                        //SketchPlane sketchPlane = Sketch_plain(edit_doc, all_data_list_tunnel[times][i - 1].start_point, all_data_list_tunnel[times][i].start_point);
-                        SketchPlane sketchPlane = SP(edit_doc, all_data_list_tunnel[times][i - 1].start_point, all_data_list_tunnel[times][i].start_point); // 培文改寫
+                        SketchPlane sketchPlane = Sketch_plain(edit_doc, all_data_list_tunnel[times][i - 1].start_point, all_data_list_tunnel[times][i].start_point);
 
                         SweptBlend sweptBlend = edit_doc.FamilyCreate.NewSweptBlend(isSolid, path, sketchPlane, sweepProfile, sweepProfile);
 
@@ -632,40 +629,30 @@ namespace SinoTunnel
             }
             catch (Exception e) { TaskDialog.Show("error", e.Message + e.StackTrace); }
         }
+        //// 台大
+        //public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
+        //{
+        //    SketchPlane sk = null;
+        //    XYZ v = end - start;
+        //    double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
+        //    XYZ w = (dxy > 0.00000001) ? XYZ.BasisY : XYZ.BasisZ;
+        //    XYZ norm = v.CrossProduct(w).Normalize();
+        //    Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
+        //    sk = SketchPlane.Create(doc, geomPlane);
 
+        //    return sk;
+        //}
+
+        // 培文改寫
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {
             SketchPlane sk = null;
-
             XYZ v = end - start;
-
-            double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
-
-            XYZ w = (dxy > 0.00000001)
-                ? XYZ.BasisY
-                : XYZ.BasisZ;
-
-            XYZ norm = v.CrossProduct(w).Normalize();
-
-            Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
-
-            sk = SketchPlane.Create(doc, geomPlane);
-
-            return sk;
-        }
-
-        // 培文改寫
-        public SketchPlane SP(Document doc, XYZ start, XYZ end)
-        {
-            SketchPlane sk = null;
-
-            XYZ v = end - start;
-
             double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
 
             XYZ w = XYZ.BasisZ;
             XYZ norm = v.CrossProduct(w).Normalize();
-            if (norm.Z > 0) { norm = -norm; }
+            //if (norm.Z > 0) { norm = -norm; }
             Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
 
             sk = SketchPlane.Create(doc, geomPlane);
