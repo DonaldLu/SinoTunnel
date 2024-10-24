@@ -664,6 +664,7 @@ namespace SinoTunnel
             XYZ v = end - start;
             XYZ w = XYZ.BasisZ;
             XYZ norm = v.CrossProduct(w).Normalize();
+            //if (norm.Z > 0) { norm = -norm; }
             Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
             sk = SketchPlane.Create(doc, geomPlane);
 
@@ -837,6 +838,5 @@ namespace SinoTunnel
         {
             return "Event handler is working now!!";
         }
-
     }
 }

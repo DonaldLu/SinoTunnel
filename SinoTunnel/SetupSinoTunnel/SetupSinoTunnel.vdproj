@@ -21,13 +21,13 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_8CB59979ECEF430994FD5E198ABB7EE0"
+        "MsmKey" = "8:_2716133020BF4D67A57CAEBFFE2CA0FE"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
-        "MsmKey" = "8:_A2009DA0AFD644C0983CF18F42626AD5"
+        "MsmKey" = "8:_8CB59979ECEF430994FD5E198ABB7EE0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -40,7 +40,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_A2009DA0AFD644C0983CF18F42626AD5"
+        "OwnerKey" = "8:_2716133020BF4D67A57CAEBFFE2CA0FE"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -158,12 +158,23 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8CB59979ECEF430994FD5E198ABB7EE0"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2716133020BF4D67A57CAEBFFE2CA0FE"
             {
-            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\2018\\SinoTunnel.addin"
-            "TargetName" = "8:SinoTunnel.addin"
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SinoTunnel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_2716133020BF4D67A57CAEBFFE2CA0FE"
+                    {
+                    "Name" = "8:SinoTunnel.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\SinoTunnel\\SinoTunnel.dll"
+            "TargetName" = "8:"
             "Tag" = "8:"
-            "Folder" = "8:_F4ED539428D644B49D6E118A8DABBB9F"
+            "Folder" = "8:_7AD1E1B444CB4B939E38088E5C6DCEBF"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -178,23 +189,12 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_A2009DA0AFD644C0983CF18F42626AD5"
+            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8CB59979ECEF430994FD5E198ABB7EE0"
             {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SinoTunnel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_A2009DA0AFD644C0983CF18F42626AD5"
-                    {
-                    "Name" = "8:SinoTunnel.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\SinoTunnel\\SinoTunnel.dll"
-            "TargetName" = "8:"
+            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\2018\\SinoTunnel.addin"
+            "TargetName" = "8:SinoTunnel.addin"
             "Tag" = "8:"
-            "Folder" = "8:_7AD1E1B444CB4B939E38088E5C6DCEBF"
+            "Folder" = "8:_F4ED539428D644B49D6E118A8DABBB9F"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -329,15 +329,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SetupSinoTunnel"
-        "ProductCode" = "8:{5362FE63-EC44-45E1-8118-15593A141A9B}"
-        "PackageCode" = "8:{27D1392B-3F09-4D6A-B55A-344083A52821}"
+        "ProductCode" = "8:{1FB8BD42-8CFE-424D-B432-66A314E006EA}"
+        "PackageCode" = "8:{B354561F-2F9A-4BDE-A188-CD3C05881707}"
         "UpgradeCode" = "8:{797EE6CD-218A-479E-A690-70A1F7C18383}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.4"
+        "ProductVersion" = "8:1.0.5"
         "Manufacturer" = "8:中興工程_軌道二部"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
