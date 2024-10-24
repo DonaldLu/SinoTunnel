@@ -51,7 +51,7 @@ namespace SinoTunnel
 
                 center_point = rf.properties.center_point;
 
-                //// 培文改寫
+                //// 培文改寫, 畫軌道、隧道的線
                 //foreach(IList<data_object> data_list in all_data_list) // 軌道線形
                 //{
                 //    for (int i = 0; i < data_list.Count; i++)
@@ -366,7 +366,15 @@ namespace SinoTunnel
 
                             SweepProfile powercable_gutter_sweep_profile = edit_doc.Application.Create.NewFamilySymbolProfile(powercable_gutter_profile);
                             //以隧道線形建置
-                            Sweep empty_powercable_gutter = edit_doc.FamilyCreate.NewSweep(false, multi_path_tunnel, powercable_gutter_sweep_profile, 0, ProfilePlaneLocation.Start);
+                            //Sweep empty_powercable_gutter = edit_doc.FamilyCreate.NewSweep(false, multi_path_tunnel, powercable_gutter_sweep_profile, 0, ProfilePlaneLocation.Start); // 台大
+
+                            // 培文改寫, 使用CurveArray建立空心電纜溝槽
+                            CurveArray curveArray = new CurveArray();
+                            Curve curve = Line.CreateBound(new_start_tunnel, new_end_tunnel);
+                            curveArray.Append(curve);
+                            SketchPlane powercable_gutter_profile_sketchPlane = Sketch_plain(edit_doc, all_data_list_tunnel[times][i].start_point, all_data_list_tunnel[times][i - 1].start_point);
+                            Sweep empty_powercable_gutter = edit_doc.FamilyCreate.NewSweep(false, curveArray, powercable_gutter_profile_sketchPlane, powercable_gutter_sweep_profile, 0, ProfilePlaneLocation.Start);
+
                             empty_powercable_gutter.LookupParameter("角度").Set((Math.PI / 180) * -90);
                             //空心排水溝
                             string gutter_name = all_station_setting[times].gutter_station[gutter_index][0];
@@ -643,18 +651,20 @@ namespace SinoTunnel
         //    return sk;
         //}
 
-        // 培文改寫
+        /// <summary>
+        /// 培文改寫
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {
             SketchPlane sk = null;
             XYZ v = end - start;
-            double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
-
             XYZ w = XYZ.BasisZ;
             XYZ norm = v.CrossProduct(w).Normalize();
-            //if (norm.Z > 0) { norm = -norm; }
             Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
-
             sk = SketchPlane.Create(doc, geomPlane);
 
             return sk;

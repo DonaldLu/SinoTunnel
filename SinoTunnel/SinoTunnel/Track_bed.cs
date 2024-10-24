@@ -659,18 +659,20 @@ namespace SinoTunnel
         //    return sk;
         //}
 
-        // 培文改寫
+        /// <summary>
+        /// 培文改寫
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {
             SketchPlane sk = null;
             XYZ v = end - start;
-            double dxy = Math.Abs(v.X) + Math.Abs(v.Y);
-
             XYZ w = XYZ.BasisZ;
             XYZ norm = v.CrossProduct(w).Normalize();
-            //if (norm.Z > 0) { norm = -norm; }
             Plane geomPlane = Plane.CreateByNormalAndOrigin(norm, start);
-
             sk = SketchPlane.Create(doc, geomPlane);
 
             return sk;
