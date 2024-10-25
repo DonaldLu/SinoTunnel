@@ -246,41 +246,44 @@ namespace SinoTunnel
                             (x => x.Name.Contains("鋼軌雛型")).ToList();
                     foreach (Family orbit_family in orbit_family_list)
                     {
-                        if (gauge != 760)
+                        //if (gauge != 760)
+                        //{
+                        Document orbit_doc = doc.EditFamily(orbit_family);
+
+                        Transaction orbit_t = new Transaction(orbit_doc);
+                        orbit_t.Start("根據軌距移動鋼軌");
+
+                        List<ElementId> left_profile = new List<ElementId>();
+                        List<ElementId> right_profile = new List<ElementId>();
+                        List<CurveElement> detailArc_list = new FilteredElementCollector(orbit_doc)
+                                .OfClass(typeof(CurveElement)).Cast<CurveElement>().Where(x => x.LineStyle.Name == "輪廓").ToList();
+                        foreach (CurveElement arc in detailArc_list)
                         {
-                            Document orbit_doc = doc.EditFamily(orbit_family);
-
-                            Transaction orbit_t = new Transaction(orbit_doc);
-                            orbit_t.Start("根據軌距移動鋼軌");
-
-                            List<ElementId> left_profile = new List<ElementId>();
-                            List<ElementId> right_profile = new List<ElementId>();
-                            List<CurveElement> detailArc_list = new FilteredElementCollector(orbit_doc)
-                                    .OfClass(typeof(CurveElement)).Cast<CurveElement>().Where(x => x.LineStyle.Name == "輪廓").ToList();
-                            foreach (CurveElement arc in detailArc_list)
-                            {
-                                if (arc.get_BoundingBox(orbit_doc.ActiveView).Max.X > 0)
-                                    right_profile.Add(arc.Id);
-                                else
-                                    left_profile.Add(arc.Id);
-                            }
-                            try
-                            {
-                                ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge) / 304.8, 0, 0));
-                            }
-                            catch
-                            {
-                                ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ((gauge - 760.0) / 304.8, 0, 0));
-                            }
-
-
-                            orbit_t.Commit();
-                            //orbit_doc.Save();
-
-                            orbit_doc.LoadFamily(doc, new FamilyOption());
-                            app.OpenAndActivateDocument(doc.PathName);
-                            orbit_doc.Close(false);
+                            if (arc.get_BoundingBox(orbit_doc.ActiveView).Max.X > 0)
+                                right_profile.Add(arc.Id);
+                            else
+                                left_profile.Add(arc.Id);
                         }
+                        try
+                        {
+                            //ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge) / 304.8, 0, 0));
+                            double offset = RevitAPI.ConvertToInternalUnits(0, "millimeters");
+                            ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ(offset, 0, 0));
+                        }
+                        catch
+                        {
+                            //ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ((gauge - 760.0) / 304.8, 0, 0));
+                            double offset = RevitAPI.ConvertToInternalUnits(0, "millimeters");
+                            ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ(-offset, 0, 0));
+                        }
+
+                        orbit_t.Commit();
+                        //orbit_doc.Save();
+
+                        orbit_doc.LoadFamily(doc, new FamilyOption());
+                        app.OpenAndActivateDocument(doc.PathName);
+                        orbit_doc.Close(false);
+                        //}
                     }
 
                     //sub.Commit();
@@ -389,6 +392,9 @@ namespace SinoTunnel
                     SaveAsOptions bsaveAsOptions = new SaveAsOptions { OverwriteExistingFile = true, MaximumBackups = 1 };
                     doc.SaveAs(path + "道床\\instance\\道床final_" + count.ToString() + ".rfa", bsaveAsOptions);
                     app.OpenAndActivateDocument(ori_doc.PathName);
+                    // 更新專案內Family的參數
+                    try { Family family = doc.LoadFamily(ori_doc, new LoadOptions()); }
+                    catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
                     doc.Close();
 
                     Transaction ori_t = new Transaction(ori_doc);
@@ -404,7 +410,17 @@ namespace SinoTunnel
                         .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
                         (x => x.Name == "道床final_" + count.ToString()).First();
                     track_bed.Activate();
-                    FamilyInstance object_acr = ori_doc.Create.NewFamilyInstance(XYZ.Zero, track_bed, StructuralType.NonStructural);
+
+                    // 如果專案中未放置道床才擺放
+                    try
+                    {
+                        FamilyInstance findIns = new FilteredElementCollector(ori_doc).OfCategory(BuiltInCategory.OST_GenericModel).WhereElementIsNotElementType().Where(x => x.Name.Equals(track_bed.Name)).Cast<FamilyInstance>().FirstOrDefault();
+                        if (findIns == null) { FamilyInstance object_acr = ori_doc.Create.NewFamilyInstance(XYZ.Zero, track_bed, StructuralType.NonStructural); }
+                    }
+                    catch (Exception)
+                    {
+                        FamilyInstance object_acr = ori_doc.Create.NewFamilyInstance(XYZ.Zero, track_bed, StructuralType.NonStructural);
+                    }
                     ori_t.Commit();
 
                     ori_t.Start("第三軌和鋼軌基鈑");
@@ -744,6 +760,21 @@ namespace SinoTunnel
             {
                 TaskDialog.Show("error", "Wrong track bed name");
             }
+        }
+    }
+    // 更新專案內Family的參數
+    public class LoadOptions : IFamilyLoadOptions
+    {
+        public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues)
+        {
+            overwriteParameterValues = true;
+            return true;
+        }
+        public bool OnSharedFamilyFound(Family sharedFamily, bool familyInUse, out FamilySource source, out bool overwriteParameterValues)
+        {
+            source = FamilySource.Family;
+            overwriteParameterValues = true;
+            return true;
         }
     }
     // 關閉警示視窗 

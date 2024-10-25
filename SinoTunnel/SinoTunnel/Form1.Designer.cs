@@ -45,15 +45,6 @@
             this.textBox3 = new System.Windows.Forms.TextBox();
             this.BG_panel = new System.Windows.Forms.Panel();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
-            this.gradientPanel2 = new SinoTunnel.GradientPanel();
-            this.label2 = new System.Windows.Forms.Label();
-            this.result_button = new System.Windows.Forms.Button();
-            this.build_button = new System.Windows.Forms.Button();
-            this.load_button = new System.Windows.Forms.Button();
-            this.gradientPanel1 = new SinoTunnel.GradientPanel();
-            this.label5 = new System.Windows.Forms.Label();
-            this.exit_button = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
             this.load_panel = new System.Windows.Forms.Panel();
             this.filename_comboBox = new System.Windows.Forms.ComboBox();
             this.filepath_button = new System.Windows.Forms.Button();
@@ -69,15 +60,24 @@
             this.track_bed_button = new System.Windows.Forms.Button();
             this.inverted_arc_button = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.gradientPanel2 = new SinoTunnel.GradientPanel();
+            this.label2 = new System.Windows.Forms.Label();
+            this.result_button = new System.Windows.Forms.Button();
+            this.build_button = new System.Windows.Forms.Button();
+            this.load_button = new System.Windows.Forms.Button();
+            this.gradientPanel1 = new SinoTunnel.GradientPanel();
+            this.label5 = new System.Windows.Forms.Label();
+            this.exit_button = new System.Windows.Forms.Button();
+            this.label1 = new System.Windows.Forms.Label();
             this.result_panel.SuspendLayout();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
-            this.gradientPanel2.SuspendLayout();
-            this.gradientPanel1.SuspendLayout();
             this.load_panel.SuspendLayout();
             this.build_panel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.gradientPanel2.SuspendLayout();
+            this.gradientPanel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // result_panel
@@ -185,84 +185,6 @@
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
-            // gradientPanel2
-            // 
-            this.gradientPanel2.BackColor = System.Drawing.Color.White;
-            this.gradientPanel2.ColorBottom = System.Drawing.Color.Empty;
-            this.gradientPanel2.ColorTop = System.Drawing.Color.Empty;
-            this.gradientPanel2.Controls.Add(this.label2);
-            this.gradientPanel2.Controls.Add(this.result_button);
-            this.gradientPanel2.Controls.Add(this.build_button);
-            this.gradientPanel2.Controls.Add(this.load_button);
-            resources.ApplyResources(this.gradientPanel2, "gradientPanel2");
-            this.gradientPanel2.Name = "gradientPanel2";
-            // 
-            // label2
-            // 
-            resources.ApplyResources(this.label2, "label2");
-            this.label2.ForeColor = System.Drawing.Color.DarkGray;
-            this.label2.Name = "label2";
-            // 
-            // result_button
-            // 
-            resources.ApplyResources(this.result_button, "result_button");
-            this.result_button.ForeColor = System.Drawing.Color.DarkGray;
-            this.result_button.Name = "result_button";
-            this.result_button.UseVisualStyleBackColor = false;
-            this.result_button.Click += new System.EventHandler(this.result_button_Click);
-            // 
-            // build_button
-            // 
-            resources.ApplyResources(this.build_button, "build_button");
-            this.build_button.ForeColor = System.Drawing.Color.DarkGray;
-            this.build_button.Name = "build_button";
-            this.build_button.UseVisualStyleBackColor = false;
-            this.build_button.Click += new System.EventHandler(this.build_button_Click);
-            // 
-            // load_button
-            // 
-            this.load_button.BackColor = System.Drawing.Color.White;
-            resources.ApplyResources(this.load_button, "load_button");
-            this.load_button.ForeColor = System.Drawing.Color.DarkGray;
-            this.load_button.Name = "load_button";
-            this.load_button.UseVisualStyleBackColor = false;
-            this.load_button.Click += new System.EventHandler(this.load_button_Click);
-            // 
-            // gradientPanel1
-            // 
-            this.gradientPanel1.BackColor = System.Drawing.Color.White;
-            this.gradientPanel1.ColorBottom = System.Drawing.Color.Empty;
-            this.gradientPanel1.ColorTop = System.Drawing.Color.Empty;
-            this.gradientPanel1.Controls.Add(this.label5);
-            this.gradientPanel1.Controls.Add(this.exit_button);
-            this.gradientPanel1.Controls.Add(this.label1);
-            resources.ApplyResources(this.gradientPanel1, "gradientPanel1");
-            this.gradientPanel1.Name = "gradientPanel1";
-            this.gradientPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gradientPanel1_MouseDown);
-            this.gradientPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gradientPanel1_MouseMove);
-            this.gradientPanel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gradientPanel1_MouseUp);
-            // 
-            // label5
-            // 
-            resources.ApplyResources(this.label5, "label5");
-            this.label5.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.label5.Name = "label5";
-            // 
-            // exit_button
-            // 
-            this.exit_button.BackColor = System.Drawing.Color.White;
-            resources.ApplyResources(this.exit_button, "exit_button");
-            this.exit_button.Name = "exit_button";
-            this.exit_button.UseVisualStyleBackColor = false;
-            this.exit_button.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // label1
-            // 
-            resources.ApplyResources(this.label1, "label1");
-            this.label1.ForeColor = System.Drawing.Color.DodgerBlue;
-            this.label1.Name = "label1";
-            this.label1.Click += new System.EventHandler(this.label1_Click);
-            // 
             // load_panel
             // 
             this.load_panel.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(240)))), ((int)(((byte)(240)))), ((int)(((byte)(240)))));
@@ -281,6 +203,7 @@
             this.filename_comboBox.FormattingEnabled = true;
             this.filename_comboBox.Name = "filename_comboBox";
             this.filename_comboBox.SelectedIndexChanged += new System.EventHandler(this.filename_comboBox_SelectedIndexChanged);
+            this.filename_comboBox.MouseClick += new System.Windows.Forms.MouseEventHandler(this.filename_comboBox_MouseClick);
             // 
             // filepath_button
             // 
@@ -380,6 +303,84 @@
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.TabStop = false;
             // 
+            // gradientPanel2
+            // 
+            this.gradientPanel2.BackColor = System.Drawing.Color.White;
+            this.gradientPanel2.ColorBottom = System.Drawing.Color.Empty;
+            this.gradientPanel2.ColorTop = System.Drawing.Color.Empty;
+            this.gradientPanel2.Controls.Add(this.label2);
+            this.gradientPanel2.Controls.Add(this.result_button);
+            this.gradientPanel2.Controls.Add(this.build_button);
+            this.gradientPanel2.Controls.Add(this.load_button);
+            resources.ApplyResources(this.gradientPanel2, "gradientPanel2");
+            this.gradientPanel2.Name = "gradientPanel2";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(this.label2, "label2");
+            this.label2.ForeColor = System.Drawing.Color.DarkGray;
+            this.label2.Name = "label2";
+            // 
+            // result_button
+            // 
+            resources.ApplyResources(this.result_button, "result_button");
+            this.result_button.ForeColor = System.Drawing.Color.DarkGray;
+            this.result_button.Name = "result_button";
+            this.result_button.UseVisualStyleBackColor = false;
+            this.result_button.Click += new System.EventHandler(this.result_button_Click);
+            // 
+            // build_button
+            // 
+            resources.ApplyResources(this.build_button, "build_button");
+            this.build_button.ForeColor = System.Drawing.Color.DarkGray;
+            this.build_button.Name = "build_button";
+            this.build_button.UseVisualStyleBackColor = false;
+            this.build_button.Click += new System.EventHandler(this.build_button_Click);
+            // 
+            // load_button
+            // 
+            this.load_button.BackColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.load_button, "load_button");
+            this.load_button.ForeColor = System.Drawing.Color.DarkGray;
+            this.load_button.Name = "load_button";
+            this.load_button.UseVisualStyleBackColor = false;
+            this.load_button.Click += new System.EventHandler(this.load_button_Click);
+            // 
+            // gradientPanel1
+            // 
+            this.gradientPanel1.BackColor = System.Drawing.Color.White;
+            this.gradientPanel1.ColorBottom = System.Drawing.Color.Empty;
+            this.gradientPanel1.ColorTop = System.Drawing.Color.Empty;
+            this.gradientPanel1.Controls.Add(this.label5);
+            this.gradientPanel1.Controls.Add(this.exit_button);
+            this.gradientPanel1.Controls.Add(this.label1);
+            resources.ApplyResources(this.gradientPanel1, "gradientPanel1");
+            this.gradientPanel1.Name = "gradientPanel1";
+            this.gradientPanel1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.gradientPanel1_MouseDown);
+            this.gradientPanel1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.gradientPanel1_MouseMove);
+            this.gradientPanel1.MouseUp += new System.Windows.Forms.MouseEventHandler(this.gradientPanel1_MouseUp);
+            // 
+            // label5
+            // 
+            resources.ApplyResources(this.label5, "label5");
+            this.label5.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.label5.Name = "label5";
+            // 
+            // exit_button
+            // 
+            this.exit_button.BackColor = System.Drawing.Color.White;
+            resources.ApplyResources(this.exit_button, "exit_button");
+            this.exit_button.Name = "exit_button";
+            this.exit_button.UseVisualStyleBackColor = false;
+            this.exit_button.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // label1
+            // 
+            resources.ApplyResources(this.label1, "label1");
+            this.label1.ForeColor = System.Drawing.Color.DodgerBlue;
+            this.label1.Name = "label1";
+            this.label1.Click += new System.EventHandler(this.label1_Click);
+            // 
             // Form1
             // 
             resources.ApplyResources(this, "$this");
@@ -401,15 +402,15 @@
             this.tabPage1.PerformLayout();
             this.tabPage3.ResumeLayout(false);
             this.tabPage3.PerformLayout();
-            this.gradientPanel2.ResumeLayout(false);
-            this.gradientPanel2.PerformLayout();
-            this.gradientPanel1.ResumeLayout(false);
-            this.gradientPanel1.PerformLayout();
             this.load_panel.ResumeLayout(false);
             this.load_panel.PerformLayout();
             this.build_panel.ResumeLayout(false);
             this.build_panel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.gradientPanel2.ResumeLayout(false);
+            this.gradientPanel2.PerformLayout();
+            this.gradientPanel1.ResumeLayout(false);
+            this.gradientPanel1.PerformLayout();
             this.ResumeLayout(false);
 
         }

@@ -407,10 +407,11 @@ namespace SinoTunnel
             SaveAsOptions save_option = new SaveAsOptions();
             save_option.OverwriteExistingFile = true;
             edit_doc.SaveAs(path + "自適應環形\\instance\\自適應環形" + tail + ".rfa", save_option);
-
             uiapp.OpenAndActivateDocument(doc_path);
+            // 更新專案內Family的參數
+            try { Family family = edit_doc.LoadFamily(uiapp.ActiveUIDocument.Document, new LoadOptions()); }
+            catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
             edit_doc.Close(false);
-
         }
 
         // 建立環形
@@ -682,10 +683,25 @@ namespace SinoTunnel
             return vector;
         }
 
+        // 更新專案內Family的參數
+        public class LoadOptions : IFamilyLoadOptions
+        {
+            public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues)
+            {
+                overwriteParameterValues = true;
+                return true;
+            }
+            public bool OnSharedFamilyFound(Family sharedFamily, bool familyInUse, out FamilySource source, out bool overwriteParameterValues)
+            {
+                source = FamilySource.Family;
+                overwriteParameterValues = true;
+                return true;
+            }
+        }
+
         public string GetName()
         {
             return "Event handler is working now!!";
         }
-
     }
 }

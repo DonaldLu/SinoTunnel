@@ -229,13 +229,6 @@ namespace SinoTunnel
 
         private void filepath_button_Click(object sender, EventArgs e)
         {
-            //OpenFileDialog ofd = new OpenFileDialog();
-            //ofd.Title = "請選擇SinoTunnel Excel檔";
-            //ofd.InitialDirectory = ".\\";
-            //ofd.Filter = "Excel Files (*.xlsx)|*.xlsx|Excel Files (*.xls)|*.xls|All Files (*.*)|*.*";
-            //ofd.Multiselect = false; // 多選檔案
-            //path = string.Empty; // 檔案路徑            
-            //if (ofd.ShowDialog() == DialogResult.OK) { path = Directory.GetParent(ofd.FileName).FullName; }
             filepath_textbox.Text = "";
             FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
             if (folderBrowserDialog.ShowDialog() == DialogResult.OK)
@@ -252,6 +245,21 @@ namespace SinoTunnel
                     filename_comboBox.Items.Add(Path.GetFileName(filename));
             }
         }
+
+        private void filename_comboBox_MouseClick(object sender, MouseEventArgs e)
+        {
+            string lastChar = filepath_textbox.Text[filepath_textbox.Text.Length - 1].ToString();
+            if (!lastChar.Equals("\\")) { path = filepath_textbox.Text + @"\"; }
+            string[] filename_list = Directory.GetFiles(path);
+            filename_comboBox.Items.Clear(); // 清除原有檔案重新讀取
+            foreach (string filename in filename_list)
+            {
+                string realname = Path.GetFileName(filename);
+                if (realname.Contains(".xlsx"))
+                    filename_comboBox.Items.Add(Path.GetFileName(filename));
+            }
+        }
+
         private void inverted_arc_button_Click(object sender, EventArgs e)
         {
             externalEvent_inverted_arc.Raise();

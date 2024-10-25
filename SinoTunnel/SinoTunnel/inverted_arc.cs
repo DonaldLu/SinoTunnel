@@ -615,6 +615,9 @@ namespace SinoTunnel
                     SaveAsOptions saveAsOptions = new SaveAsOptions { OverwriteExistingFile = true, MaximumBackups = 1 };
                     edit_doc.SaveAs(path + "仰拱\\仰拱final_" + times.ToString() + ".rfa", saveAsOptions);
                     app.OpenAndActivateDocument(doc.PathName);
+                    // 更新專案內Family的參數
+                    try { Family family = edit_doc.LoadFamily(doc, new LoadOptions()); }
+                    catch(Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
                     edit_doc.Close();
 
                     //載入專案內
@@ -631,7 +634,17 @@ namespace SinoTunnel
                         .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
                         (x => x.Name == "仰拱final_" + times.ToString()).First();
                     invert_arc.Activate();
-                    FamilyInstance object_acr = doc.Create.NewFamilyInstance(XYZ.Zero, invert_arc, StructuralType.NonStructural);
+
+                    // 如果專案中未放置仰拱才擺放
+                    try
+                    {
+                        FamilyInstance findIns = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_GenericModel).WhereElementIsNotElementType().Where(x => x.Name.Equals(invert_arc.Name)).Cast<FamilyInstance>().FirstOrDefault();
+                        if (findIns == null) { FamilyInstance object_acr = doc.Create.NewFamilyInstance(XYZ.Zero, invert_arc, StructuralType.NonStructural); }
+                    }
+                    catch(Exception)
+                    {
+                        FamilyInstance object_acr = doc.Create.NewFamilyInstance(XYZ.Zero, invert_arc, StructuralType.NonStructural);
+                    }
                     pro_t.Commit();
                 }
             }
@@ -833,7 +846,21 @@ namespace SinoTunnel
             }
             catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
         }
-
+        // 更新專案內Family的參數
+        public class LoadOptions : IFamilyLoadOptions
+        {
+            public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues)
+            {
+                overwriteParameterValues = true;
+                return true;
+            }
+            public bool OnSharedFamilyFound(Family sharedFamily, bool familyInUse, out FamilySource source, out bool overwriteParameterValues)
+            {
+                source = FamilySource.Family;
+                overwriteParameterValues = true;
+                return true;
+            }
+        }
         public string GetName()
         {
             return "Event handler is working now!!";

@@ -106,8 +106,10 @@ namespace SinoTunnel
                     //另存起來
                     SaveAsOptions saveAsOptions = new SaveAsOptions { OverwriteExistingFile = true, MaximumBackups = 1 };
                     edit_doc.SaveAs(path + "包絡線\\" + en + count.ToString() + "包絡線.rfa", saveAsOptions);
-
                     app.OpenAndActivateDocument(doc.PathName);
+                    // 更新專案內Family的參數
+                    try { Family family = edit_doc.LoadFamily(doc, new LoadOptions()); }
+                    catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
                     edit_doc.Close();
 
                     //載入
@@ -120,7 +122,17 @@ namespace SinoTunnel
                     .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
                     (x => x.Name == en + count.ToString() + "包絡線").First();
                     pre_load.Activate();
-                    FamilyInstance object_to_load = doc.Create.NewFamilyInstance(XYZ.Zero, pre_load, StructuralType.NonStructural);
+
+                    // 如果專案中未放置包絡線才擺放
+                    try
+                    {
+                        FamilyInstance findIns = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_GenericModel).WhereElementIsNotElementType().Where(x => x.Name.Equals(pre_load.Name)).Cast<FamilyInstance>().FirstOrDefault();
+                        if (findIns == null) { FamilyInstance object_to_load = doc.Create.NewFamilyInstance(XYZ.Zero, pre_load, StructuralType.NonStructural); }
+                    }
+                    catch (Exception)
+                    {
+                        FamilyInstance object_to_load = doc.Create.NewFamilyInstance(XYZ.Zero, pre_load, StructuralType.NonStructural);
+                    }
                     t.Commit();
                 }
             }
@@ -166,8 +178,10 @@ namespace SinoTunnel
                     //另存起來
                     SaveAsOptions saveAsOptions = new SaveAsOptions { OverwriteExistingFile = true, MaximumBackups = 1 };
                     edit_doc.SaveAs(path + "包絡線\\" + en + count.ToString() + "包絡線.rfa", saveAsOptions);
-
                     app.OpenAndActivateDocument(doc.PathName);
+                    // 更新專案內Family的參數
+                    try { Family family = edit_doc.LoadFamily(doc, new LoadOptions()); }
+                    catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
                     edit_doc.Close();
 
                     //載入
@@ -180,7 +194,17 @@ namespace SinoTunnel
                     .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
                     (x => x.Name == en + count.ToString() + "包絡線").First();
                     pre_load.Activate();
-                    FamilyInstance object_to_load = doc.Create.NewFamilyInstance(XYZ.Zero, pre_load, StructuralType.NonStructural);
+
+                    // 如果專案中未放置包絡線才擺放
+                    try
+                    {
+                        FamilyInstance findIns = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_GenericModel).WhereElementIsNotElementType().Where(x => x.Name.Equals(pre_load.Name)).Cast<FamilyInstance>().FirstOrDefault();
+                        if (findIns == null) { FamilyInstance object_to_load = doc.Create.NewFamilyInstance(XYZ.Zero, pre_load, StructuralType.NonStructural); }
+                    }
+                    catch (Exception)
+                    {
+                        FamilyInstance object_to_load = doc.Create.NewFamilyInstance(XYZ.Zero, pre_load, StructuralType.NonStructural);
+                    }
                     t.Commit();
                 }
             }
@@ -275,6 +299,21 @@ namespace SinoTunnel
                     Curve line = Line.CreateBound(start, end);
                     edit_doc.FamilyCreate.NewModelCurve(line, Sketch_plain(edit_doc, start, end));
                 }
+            }
+        }
+        // 更新專案內Family的參數
+        public class LoadOptions : IFamilyLoadOptions
+        {
+            public bool OnFamilyFound(bool familyInUse, out bool overwriteParameterValues)
+            {
+                overwriteParameterValues = true;
+                return true;
+            }
+            public bool OnSharedFamilyFound(Family sharedFamily, bool familyInUse, out FamilySource source, out bool overwriteParameterValues)
+            {
+                source = FamilySource.Family;
+                overwriteParameterValues = true;
+                return true;
             }
         }
         public string GetName()
