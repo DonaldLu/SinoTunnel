@@ -246,44 +246,42 @@ namespace SinoTunnel
                             (x => x.Name.Contains("鋼軌雛型")).ToList();
                     foreach (Family orbit_family in orbit_family_list)
                     {
-                        //if (gauge != 760)
-                        //{
-                        Document orbit_doc = doc.EditFamily(orbit_family);
-
-                        Transaction orbit_t = new Transaction(orbit_doc);
-                        orbit_t.Start("根據軌距移動鋼軌");
-
-                        List<ElementId> left_profile = new List<ElementId>();
-                        List<ElementId> right_profile = new List<ElementId>();
-                        List<CurveElement> detailArc_list = new FilteredElementCollector(orbit_doc)
-                                .OfClass(typeof(CurveElement)).Cast<CurveElement>().Where(x => x.LineStyle.Name == "輪廓").ToList();
-                        foreach (CurveElement arc in detailArc_list)
+                        if (gauge != 760)
                         {
-                            if (arc.get_BoundingBox(orbit_doc.ActiveView).Max.X > 0)
-                                right_profile.Add(arc.Id);
-                            else
-                                left_profile.Add(arc.Id);
-                        }
-                        try
-                        {
-                            //ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge) / 304.8, 0, 0));
-                            double offset = RevitAPI.ConvertToInternalUnits(0, "millimeters");
-                            ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ(offset, 0, 0));
-                        }
-                        catch
-                        {
-                            //ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ((gauge - 760.0) / 304.8, 0, 0));
-                            double offset = RevitAPI.ConvertToInternalUnits(0, "millimeters");
-                            ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ(-offset, 0, 0));
-                        }
+                            Document orbit_doc = doc.EditFamily(orbit_family);
 
-                        orbit_t.Commit();
-                        //orbit_doc.Save();
+                            Transaction orbit_t = new Transaction(orbit_doc);
+                            orbit_t.Start("根據軌距移動鋼軌");
 
-                        orbit_doc.LoadFamily(doc, new FamilyOption());
-                        app.OpenAndActivateDocument(doc.PathName);
-                        orbit_doc.Close(false);
-                        //}
+                            List<ElementId> left_profile = new List<ElementId>();
+                            List<ElementId> right_profile = new List<ElementId>();
+                            List<CurveElement> detailArc_list = new FilteredElementCollector(orbit_doc)
+                                    .OfClass(typeof(CurveElement)).Cast<CurveElement>().Where(x => x.LineStyle.Name == "輪廓").ToList();
+                            foreach (CurveElement arc in detailArc_list)
+                            {
+                                if (arc.get_BoundingBox(orbit_doc.ActiveView).Max.X > 0)
+                                    right_profile.Add(arc.Id);
+                                else
+                                    left_profile.Add(arc.Id);
+                            }
+                            try
+                            {
+                                //ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge) / 304.8, 0, 0));                                
+                                ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge - 37) / 304.8, 0, 0)); // 培文改寫
+                            }
+                            catch
+                            {
+                                //ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ((gauge - 760.0) / 304.8, 0, 0));
+                                ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ(-(760.0 - gauge - 37) / 304.8, 0, 0)); // 培文改寫
+                            }
+
+                            orbit_t.Commit();
+                            //orbit_doc.Save();
+
+                            orbit_doc.LoadFamily(doc, new FamilyOption());
+                            app.OpenAndActivateDocument(doc.PathName);
+                            orbit_doc.Close(false);
+                        }
                     }
 
                     //sub.Commit();
