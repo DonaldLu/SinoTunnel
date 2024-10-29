@@ -21,12 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_2716133020BF4D67A57CAEBFFE2CA0FE"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_8CB59979ECEF430994FD5E198ABB7EE0"
         "OwnerKey" = "8:_UNDEFINED"
         "MsmSig" = "8:_UNDEFINED"
@@ -39,8 +33,14 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_DC77B1A53FD0453E8823A95E90BE2B24"
+        "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_2716133020BF4D67A57CAEBFFE2CA0FE"
+        "OwnerKey" = "8:_DC77B1A53FD0453E8823A95E90BE2B24"
         "MsmSig" = "8:_UNDEFINED"
         }
     }
@@ -158,37 +158,6 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_2716133020BF4D67A57CAEBFFE2CA0FE"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SinoTunnel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_2716133020BF4D67A57CAEBFFE2CA0FE"
-                    {
-                    "Name" = "8:SinoTunnel.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\SinoTunnel\\SinoTunnel.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_7AD1E1B444CB4B939E38088E5C6DCEBF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
             "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8CB59979ECEF430994FD5E198ABB7EE0"
             {
             "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\2018\\SinoTunnel.addin"
@@ -215,6 +184,37 @@
             "TargetName" = "8:SinoTunnel.addin"
             "Tag" = "8:"
             "Folder" = "8:_3BC30617D1B74D01971AB412C0F4EF46"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:FALSE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC77B1A53FD0453E8823A95E90BE2B24"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:SinoTunnel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_DC77B1A53FD0453E8823A95E90BE2B24"
+                    {
+                    "Name" = "8:SinoTunnel.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\SinoTunnel\\SinoTunnel.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_7AD1E1B444CB4B939E38088E5C6DCEBF"
             "Condition" = "8:"
             "Transitive" = "11:FALSE"
             "Vital" = "11:TRUE"
@@ -329,15 +329,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SetupSinoTunnel"
-        "ProductCode" = "8:{1FB8BD42-8CFE-424D-B432-66A314E006EA}"
-        "PackageCode" = "8:{B354561F-2F9A-4BDE-A188-CD3C05881707}"
+        "ProductCode" = "8:{EFD27F45-62D5-451A-82F1-10339EEB3C36}"
+        "PackageCode" = "8:{64EC963B-3D42-4DF2-8136-E087A34684A7}"
         "UpgradeCode" = "8:{797EE6CD-218A-479E-A690-70A1F7C18383}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.5"
+        "ProductVersion" = "8:1.0.6"
         "Manufacturer" = "8:中興工程_軌道二部"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

@@ -235,29 +235,37 @@ namespace SinoTunnel
             {
                 filepath_textbox.Text = folderBrowserDialog.SelectedPath + @"\";
             }
-            path = filepath_textbox.Text;
-            string[] filename_list = Directory.GetFiles(path);
-            filename_comboBox.Items.Clear(); // 清除原有檔案重新讀取
-            foreach (string filename in filename_list)
+            try
             {
-                string realname = Path.GetFileName(filename);
-                if (realname.Contains(".xlsx"))
-                    filename_comboBox.Items.Add(Path.GetFileName(filename));
+                path = filepath_textbox.Text;
+                string[] filename_list = Directory.GetFiles(path);
+                filename_comboBox.Items.Clear(); // 清除原有檔案重新讀取
+                foreach (string filename in filename_list)
+                {
+                    string realname = Path.GetFileName(filename);
+                    if (realname.Contains(".xlsx"))
+                        filename_comboBox.Items.Add(Path.GetFileName(filename));
+                }
             }
+            catch(Exception ex) { TaskDialog.Show("Error", "路徑輸入錯誤." + "\n\n" + ex.Message + "\n" + ex.ToString()); }
         }
 
         private void filename_comboBox_MouseClick(object sender, MouseEventArgs e)
         {
-            string lastChar = filepath_textbox.Text[filepath_textbox.Text.Length - 1].ToString();
-            if (!lastChar.Equals("\\")) { path = filepath_textbox.Text + @"\"; }
-            string[] filename_list = Directory.GetFiles(path);
-            filename_comboBox.Items.Clear(); // 清除原有檔案重新讀取
-            foreach (string filename in filename_list)
+            try
             {
-                string realname = Path.GetFileName(filename);
-                if (realname.Contains(".xlsx"))
-                    filename_comboBox.Items.Add(Path.GetFileName(filename));
+                string lastChar = filepath_textbox.Text[filepath_textbox.Text.Length - 1].ToString();
+                if (!lastChar.Equals("\\")) { path = filepath_textbox.Text + @"\"; }
+                string[] filename_list = Directory.GetFiles(path);
+                filename_comboBox.Items.Clear(); // 清除原有檔案重新讀取
+                foreach (string filename in filename_list)
+                {
+                    string realname = Path.GetFileName(filename);
+                    if (realname.Contains(".xlsx"))
+                        filename_comboBox.Items.Add(Path.GetFileName(filename));
+                }
             }
+            catch (Exception ex) { TaskDialog.Show("Error", "路徑輸入錯誤." + "\n\n" + ex.Message + "\n" + ex.ToString()); }
         }
 
         private void inverted_arc_button_Click(object sender, EventArgs e)
@@ -350,7 +358,8 @@ namespace SinoTunnel
 
         private void filename_comboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            name = filename_comboBox.SelectedItem.ToString();
+            try { name = filename_comboBox.SelectedItem.ToString(); }
+            catch (NullReferenceException) { }
         }
 
         private void bolt_checkbox_CheckedChanged(object sender, EventArgs e)
@@ -431,6 +440,11 @@ namespace SinoTunnel
                 this.Close();
             }
             label5.Text = "- 認證失敗，" + time_s.ToString() + "秒後強制關閉";
+        }
+
+        private void filepath_textbox_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

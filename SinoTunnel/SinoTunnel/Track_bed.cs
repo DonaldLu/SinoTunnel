@@ -40,6 +40,18 @@ namespace SinoTunnel
                 list.Add(new Tuple<IList<data_object>, setting_station>(rf.data_list2, rf.setting_Station2));
 
                 int count = -1;
+
+                // 培文改寫：移除專案中現有的所有"鋼軌基鈑"與"第三軌支架_自"
+                using (Transaction trans = new Transaction(ori_doc, "移除鋼軌基鈑與第三軌支架_自"))
+                {
+                    trans.Start();
+                    List<FamilyInstance> foundation_support_symbols = new FilteredElementCollector(ori_doc).OfCategory(BuiltInCategory.OST_GenericModel)
+                                                              .WhereElementIsNotElementType().Where(x => x.Name.Equals("鋼軌基鈑") || x.Name.Equals("第三軌支架_自"))
+                                                              .Cast<FamilyInstance>().ToList();
+                    if (foundation_support_symbols.Count > 0) { ori_doc.Delete(foundation_support_symbols.Select(x => x.Id).ToList()); }
+                    trans.Commit();
+                }
+
                 ///
                 foreach (Tuple<IList<data_object>, setting_station> all_list in list)
                 {
@@ -240,7 +252,8 @@ namespace SinoTunnel
                     //EDIT 鋼軌雛型
                     //SubTransaction sub = new SubTransaction(doc);
                     //sub.Start();
-                    double gauge = tb_properties.rail_gauge / 2.0; //鋼軌軌距
+                    double gauge = tb_properties.rail_gauge / 2.0; // 鋼軌軌距
+                    double face_width = tb_properties.rail_face_width / 2.0; // 鋼軌面寬
                     List<Family> orbit_family_list = new FilteredElementCollector(doc)
                             .OfClass(typeof(Family)).Cast<Family>().ToList().Where
                             (x => x.Name.Contains("鋼軌雛型")).ToList();
@@ -267,12 +280,12 @@ namespace SinoTunnel
                             try
                             {
                                 //ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge) / 304.8, 0, 0));                                
-                                ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge - 37) / 304.8, 0, 0)); // 培文改寫
+                                ElementTransformUtils.MoveElements(orbit_doc, left_profile, new XYZ((760.0 - gauge - face_width) / 304.8, 0, 0)); // 培文改寫
                             }
                             catch
                             {
                                 //ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ((gauge - 760.0) / 304.8, 0, 0));
-                                ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ(-(760.0 - gauge - 37) / 304.8, 0, 0)); // 培文改寫
+                                ElementTransformUtils.MoveElements(orbit_doc, right_profile, new XYZ(-(760.0 - gauge - face_width) / 304.8, 0, 0)); // 培文改寫
                             }
 
                             orbit_t.Commit();
@@ -434,6 +447,7 @@ namespace SinoTunnel
                     foundation_symbol.LookupParameter("鋼軌軌距").SetValueString(gauge.ToString());
                     int start_sta = (Convert.ToInt32(Convert.ToDouble(data_list[0].station.Split('+').Last())) + Int32.Parse(data_list[0].station.Split('+').First()) * 1000) * 1000;
                     int station = start_sta;
+
                     for (int i = 0; i < st_foundation_num; i++)
                     {
                         try
@@ -562,7 +576,7 @@ namespace SinoTunnel
                     }
                     ori_t.Commit();
                 }
-                TaskDialog.Show("test", "程序處理完畢。");
+                TaskDialog.Show("Revit", "程序處理完畢。");
             }
             catch (Exception e) { TaskDialog.Show("error", e.StackTrace + e.Message); }
         }

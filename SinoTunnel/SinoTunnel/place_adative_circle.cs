@@ -74,7 +74,6 @@ namespace SinoTunnel
 
         }
 
-
         // 放置環形元件至.rvt檔案
         public void set_tunnel(Document doc, IList<data_object> data_list, properties_object properties, List<string> cd_channel_points)
         {
@@ -323,8 +322,6 @@ namespace SinoTunnel
             return done_list;
         }
 
-
-
         // 讀取並計算環片參數至儲存類別（正常環片）
         public segment_para set_segmet_para(segment_para segment_Para, double displacement_angle, properties_object properties, double horizontal_angel, double vertical_angle)
         {
@@ -481,7 +478,6 @@ namespace SinoTunnel
             return vector;
         }
 
-
         // 環形點位小工具，讓點位能符合建立環形內環片建立的方法。
         public IList<IList<XYZ>> point_arrange(IList<IList<XYZ>> point_list)
         {
@@ -506,7 +502,6 @@ namespace SinoTunnel
 
             return point_lists;
         }
-
 
         // 建立環形內環片
         public void create_adaptive_component_instance(Document document, FamilySymbol symbol, IList<IList<XYZ>> point_list)

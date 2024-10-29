@@ -667,7 +667,6 @@ namespace SinoTunnel
             Marshal.ReleaseComObject(xlApp);
         }
 
-
         public void read_point()
         {
             //Create COM Objects. Create a COM object for everything that is referenced
@@ -1008,7 +1007,10 @@ namespace SinoTunnel
                     case "走道頂對線形高程":
                         double.TryParse(xlRange.Cells[i, 2].Value2.ToString(), out properties.walkway_top_elevation);
                         break;
-                    case "走道邊緣與軌道中心距離":
+                    case "走道邊緣與隧道中心距離":
+                        double.TryParse(xlRange.Cells[i, 2].Value2.ToString(), out properties.walkway_edge_to_rail_center_dis);
+                        break;
+                    case "走道邊緣與軌道中心距離": // 舊版Excel
                         double.TryParse(xlRange.Cells[i, 2].Value2.ToString(), out properties.walkway_edge_to_rail_center_dis);
                         break;
                     case "走道需求寬":
@@ -1647,6 +1649,9 @@ namespace SinoTunnel
                     case "鋼軌軌距":
                         double.TryParse(xlRange.Cells[i, 2].Value2.ToString(), out setting.rail_gauge);
                         break;
+                    case "鋼軌面寬":
+                        double.TryParse(xlRange.Cells[i, 2].Value2.ToString(), out setting.rail_face_width);
+                        break;
                     case "鋼軌基鈑長":
                         double.TryParse(xlRange.Cells[i, 2].Value2.ToString(), out setting.rail_base_length);
                         break;
@@ -1714,7 +1719,5 @@ namespace SinoTunnel
             int b = int.Parse(station.Split('+')[1].Split('.')[0]);
             return a * 1000 + b;
         }
-
     }
 }
-

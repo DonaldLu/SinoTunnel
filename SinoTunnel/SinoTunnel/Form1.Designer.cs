@@ -218,6 +218,7 @@
             this.filepath_textbox.BorderStyle = System.Windows.Forms.BorderStyle.None;
             resources.ApplyResources(this.filepath_textbox, "filepath_textbox");
             this.filepath_textbox.Name = "filepath_textbox";
+            this.filepath_textbox.TextChanged += new System.EventHandler(this.filepath_textbox_TextChanged);
             // 
             // label3
             // 

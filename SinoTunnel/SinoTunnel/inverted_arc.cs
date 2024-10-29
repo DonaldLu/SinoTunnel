@@ -354,6 +354,10 @@ namespace SinoTunnel
                             FamilySymbol powercable_gutter_profile = new FilteredElementCollector(edit_doc)
                             .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == "空心電纜溝槽").First();
                             input_properties(powercable_gutter_profile, rf.properties);
+                            // 培文改寫
+                            double offset = rf.properties.walkway_edge_to_rail_center_dis - offset_list[i - 1]; // 走道邊緣與隧道中心距離 - 偏移量
+                            try { powercable_gutter_profile.LookupParameter("走道邊緣與隧道中心距離").Set(offset / 304.8); }
+                            catch (Exception) { powercable_gutter_profile.LookupParameter("走道邊緣與軌道中心距離").Set(offset / 304.8); }
 
                             //if (times == 1)
                             //{
@@ -572,6 +576,10 @@ namespace SinoTunnel
                         (x => x.Name == "混凝土蓋板").First();
 
                         input_properties(fms, rf.properties);
+                        // 培文改寫
+                        double offset = rf.properties.walkway_edge_to_rail_center_dis - offset_list[i - 1]; // 走道邊緣與隧道中心距離 - 偏移量
+                        try { fms.LookupParameter("走道邊緣與隧道中心距離").Set(offset / 304.8); }
+                        catch (Exception) { fms.LookupParameter("走道邊緣與軌道中心距離").Set(offset / 304.8); }
                         //if (times == 1)
                         //{
                         //    fms.LookupParameter("偏移量").Set((offset_distinct[0] - offset_distinct[0]) / 304.8);
@@ -650,6 +658,7 @@ namespace SinoTunnel
             }
             catch (Exception e) { TaskDialog.Show("error", e.Message + e.StackTrace); }
         }
+
         //// 台大
         //public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         //{
@@ -695,7 +704,8 @@ namespace SinoTunnel
                     : properties.float_top_height.ToString();
                 fms.LookupParameter("仰拱頂部高程").SetValueString(top_ele);
                 fms.LookupParameter("隧道內半徑").SetValueString((properties.inner_diameter / 2.0).ToString());
-                fms.LookupParameter("走道邊緣與軌道中心距離").SetValueString(properties.walkway_edge_to_rail_center_dis.ToString());
+                try { fms.LookupParameter("走道邊緣與隧道中心距離").SetValueString(properties.walkway_edge_to_rail_center_dis.ToString()); } // 培文改寫
+                catch (Exception) { fms.LookupParameter("走道邊緣與軌道中心距離").SetValueString(properties.walkway_edge_to_rail_center_dis.ToString()); } // 舊版Excel&族群
                 fms.LookupParameter("連結處厚度").SetValueString(properties.connection_thick.ToString());
                 fms.LookupParameter("走道頂部高程").SetValueString(properties.walkway_top_elevation.ToString());
                 fms.LookupParameter("走道突出底").SetValueString(properties.walkway_protrusion_bottom.ToString());
@@ -748,7 +758,8 @@ namespace SinoTunnel
             else if (name == "空心電纜溝槽")
             {
                 fms.LookupParameter("走道頂對線形高程").Set(properties.walkway_top_elevation / 304.8);
-                fms.LookupParameter("走道邊緣與軌道中心距離").Set(properties.walkway_edge_to_rail_center_dis / 304.8);
+                try { fms.LookupParameter("走道邊緣與隧道中心距離").Set(properties.walkway_edge_to_rail_center_dis / 304.8); } // 培文改寫
+                catch (Exception) { fms.LookupParameter("走道邊緣與軌道中心距離").Set(properties.walkway_edge_to_rail_center_dis / 304.8); } // 舊版Excel&族群
                 fms.LookupParameter("走道電纜溝槽與走道距離").Set(properties.cable_distance / 304.8);
                 fms.LookupParameter("走道電纜溝槽上底寬").Set(properties.cable_top_width / 304.8);
                 fms.LookupParameter("走道電纜溝槽下底寬").Set(properties.cable_bottom_width / 304.8);
@@ -761,7 +772,8 @@ namespace SinoTunnel
             {
                 fms.LookupParameter("走道斜率").Set(properties.walkway_slope);
                 fms.LookupParameter("走道頂對線形高程").Set(properties.walkway_top_elevation / 304.8);
-                fms.LookupParameter("走道邊緣與軌道中心距離").Set(properties.walkway_edge_to_rail_center_dis / 304.8);
+                try { fms.LookupParameter("走道邊緣與隧道中心距離").Set(properties.walkway_edge_to_rail_center_dis / 304.8); } // 培文改寫
+                catch (Exception) { fms.LookupParameter("走道邊緣與軌道中心距離").Set(properties.walkway_edge_to_rail_center_dis / 304.8); } // 舊版Excel&族群
                 fms.LookupParameter("走道電纜溝槽混凝土蓋板寬").Set(properties.cable_cover_width / 304.8);
                 fms.LookupParameter("走道電纜溝槽混凝土蓋板突出邊距").Set(properties.cable_cover_stick_out_dis / 304.8);
                 fms.LookupParameter("走道電纜溝槽混凝土蓋板突出厚").Set(properties.cable_cover_stick_out_thick / 304.8);

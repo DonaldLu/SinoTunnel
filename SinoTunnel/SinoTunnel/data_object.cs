@@ -72,7 +72,7 @@ namespace DataObject
         public double suppad_length, suppad_width, suppad_depth, suppad_side_dis;
         public double flat_top_height, flat_elevation, flat_width;
         //鋼軌&鋼軌基板
-        public double rail_gauge, rail_base_length, rail_base_width, rail_base_thickness, rail_base_slope, rail_base_dis;
+        public double rail_gauge, rail_face_width, rail_base_length, rail_base_width, rail_base_thickness, rail_base_slope, rail_base_dis;
 
         //第三軌
         public double third_steel_between_dis, third_track_elevation, third_bracket_spacing, bracket_steel_between_dis,
