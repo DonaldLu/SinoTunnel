@@ -28,10 +28,10 @@ namespace SinoTunnel
             readfile rf = new readfile();
             IList<IList<envelope_object>> all_envelopes = new List<IList<envelope_object>>();
             IList<IList<envelope_object>> all_envelopes_third = new List<IList<envelope_object>>();
-            rf.read_envelope_1();
-            rf.read_envelope_2();
-            rf.read_envelope_3_1();
-            rf.read_envelope_3_2();
+            rf.read_envelope_1(); // 包絡線幾何 (DN)
+            rf.read_envelope_2(); // 包絡線幾何 (UP)
+            rf.read_envelope_3_1(); // 第三軌包絡線 (UP)
+            rf.read_envelope_3_2(); // 第三軌包絡線 (DN)
             all_envelopes.Add(rf.envelope_1);
             all_envelopes.Add(rf.envelope_2);
             all_envelopes_third.Add(rf.envelope_3_1);
@@ -244,22 +244,28 @@ namespace SinoTunnel
         void draw_profile(Document edit_doc, readfile rf, List<XYZ> point_list)
         {
             //Plane plane = Plane.CreateByThreePoints(point_list[0], point_list[6], point_list[12]); // 台大
-            //int endCount = point_list.Count - 1;
-            //double centerCount = Math.Ceiling((double)point_list.Count / 2);
-            //Plane plane = Plane.CreateByThreePoints(point_list[0], point_list[((int)centerCount)], point_list[endCount]);
+
+            // 培文改, 不限制13個點位
+            int endCount = point_list.Count - 1;
+            double centerCount = Math.Ceiling((double)point_list.Count / 2);
+            Plane plane = Plane.CreateByThreePoints(point_list[0], point_list[((int)centerCount)], point_list[endCount]);
+            SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
             for (int j = 0; j < point_list.Count - 1; j++)
             {
-                XYZ start_point = point_list[j];
-                XYZ end_point = point_list[j + 1];
-                //SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
-                //Curve line = Line.CreateBound(start_point, end_point);
+                try
+                {
+                    XYZ start_point = point_list[j];
+                    XYZ end_point = point_list[j + 1];
+                    //SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
+                    //Curve line = Line.CreateBound(start_point, end_point);
 
-                // 培文改寫
-                Line line = Line.CreateBound(start_point, end_point);
-                XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
-                Plane plane = Plane.CreateByNormalAndOrigin(normal, start_point);
-                SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
-                edit_doc.FamilyCreate.NewModelCurve(line, skplane);
+                    // 培文改寫
+                    Line line = Line.CreateBound(start_point, end_point);
+                    //XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
+                    //Plane plane = Plane.CreateByNormalAndOrigin(normal, start_point);
+                    edit_doc.FamilyCreate.NewModelCurve(line, skplane);
+                }
+                catch(Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
             }
         }
         void draw_profile_third(Document edit_doc, List<XYZ> point_list)
