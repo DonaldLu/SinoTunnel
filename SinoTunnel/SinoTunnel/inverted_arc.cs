@@ -20,7 +20,6 @@ namespace SinoTunnel
     {
         string path;
         double center_point;
-        public List<Curve> curves = new List<Curve>();
 
         public void Execute(UIApplication app)
         {
@@ -38,46 +37,20 @@ namespace SinoTunnel
                 rf.read_target_station2(); // 軌道線形 (UP)：里程起終點
                 rf.read_properties(); // 模型輸入資料
 
-                IList<IList<data_object>> all_data_list = new List<IList<data_object>>();
-                IList<IList<data_object>> all_data_list_tunnel = new List<IList<data_object>>();
-                IList<setting_station> all_station_setting = new List<setting_station>();
+                IList<IList<data_object>> all_data_list_tunnel = new List<IList<data_object>>(); // 隧道線形
+                IList<IList<data_object>> all_data_list = new List<IList<data_object>>(); // 軌道線形
+                IList<setting_station> all_station_setting = new List<setting_station>(); // 模型輸入資料
 
-                all_data_list.Add(rf.data_list);
-                all_data_list.Add(rf.data_list2);
-                all_data_list_tunnel.Add(rf.data_list_tunnel);
-                all_data_list_tunnel.Add(rf.data_list_tunnel2);
+                all_data_list_tunnel.Add(rf.data_list_tunnel); // 隧道線形 (DN)
+                all_data_list_tunnel.Add(rf.data_list_tunnel2); // 隧道線形 (UP)
+                all_data_list.Add(rf.data_list); // 軌道線形 (DN)
+                all_data_list.Add(rf.data_list2); // 軌道線形 (UP)
                 all_station_setting.Add(rf.setting_Station);
                 all_station_setting.Add(rf.setting_Station2);
 
                 center_point = rf.properties.center_point;
 
-                //// 培文改寫, 畫軌道、隧道的線
-                //foreach(IList<data_object> data_list in all_data_list) // 軌道線形
-                //{
-                //    for (int i = 0; i < data_list.Count; i++)
-                //    {
-                //        try { Line line = Line.CreateBound(data_list[i].start_point, data_list[i + 1].start_point); curves.Add(line); }
-                //        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
-                //    }
-                //}
-                //foreach (IList<data_object> data_list_tunnel in all_data_list_tunnel) // 隧道線形
-                //{
-                //    for (int i = 0; i < data_list_tunnel.Count; i++)
-                //    {
-                //        try { Line line = Line.CreateBound(data_list_tunnel[i].start_point, data_list_tunnel[i + 1].start_point); curves.Add(line); }
-                //        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
-                //    }
-                //}
-                //using (Transaction trans = new Transaction(doc, "畫線"))
-                //{
-                //    trans.Start();
-                //    foreach (Curve curve in curves)
-                //    {
-                //        try { DrawLine(doc, curve); }
-                //        catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
-                //    }
-                //    trans.Commit();
-                //}
+                //DrawTrackAndTunnelLines(doc, all_data_list_tunnel, all_data_list); //  畫軌道、隧道的線
 
                 for (int times = 0; times < all_data_list.Count; times++)
                 {
@@ -108,27 +81,15 @@ namespace SinoTunnel
 
                     //determine the side of the walk way
                     bool isRight = true;
-                    if (all_station_setting[times].walk_way_station[0][0] == "右側")
-                    {
-                        isRight = true;
-                    }
-                    else if (all_station_setting[times].walk_way_station[0][0] == "左側")
-                    {
-                        isRight = false;
-                    }
+                    if (all_station_setting[times].walk_way_station[0][0] == "右側") { isRight = true; }
+                    else if (all_station_setting[times].walk_way_station[0][0] == "左側") { isRight = false; }
 
                     //先對輪廓做參數化
                     List<double> offset_list = new List<double>();
                     for (int i = 0; i < all_data_list_tunnel[times].Count; i++)
                     {
-                        if (times == 1)
-                        {
-                            offset_list.Add(all_data_list_tunnel[times][i].offset);
-                        }
-                        else
-                        {
-                            offset_list.Add(all_data_list_tunnel[times][i].offset);
-                        }
+                        if (times == 1) { offset_list.Add(all_data_list_tunnel[times][i].offset); }
+                        else { offset_list.Add(all_data_list_tunnel[times][i].offset); }
                     }
 
                     //取得偏移量種類，以確定要建置幾種輪廓
@@ -167,24 +128,18 @@ namespace SinoTunnel
                             for (double i = -1; i <= gutter_station_delta + 1; i++)
                             {
                                 gutter_depth.Add(start_station_depth + i * n);
-                                if (i % hollow_gap == 0)
-                                {
-                                    hollow_depth.Add(start_station_depth + i * n);
-                                }
+                                if (i % hollow_gap == 0) { hollow_depth.Add(start_station_depth + i * n); }
                             }
                             List<double> gutter_depth_distinct = gutter_depth.Distinct().ToList();
 
                             t.Start("輸入參數");
 
-                            FamilySymbol gutter_profile = new FilteredElementCollector(edit_doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                (x => x.Name == gutter[0]).First();
+                            FamilySymbol gutter_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                          .Cast<FamilySymbol>().ToList().Where(x => x.Name == gutter[0]).First();
                             input_properties(gutter_profile, rf.properties);
 
-
-                            FamilySymbol hollow_profile = new FilteredElementCollector(edit_doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                (x => x.Name == "PVC管明溝").First();
+                            FamilySymbol hollow_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                          .Cast<FamilySymbol>().ToList().Where(x => x.Name == "PVC管明溝").First();
                             input_properties(hollow_profile, rf.properties);
 
                             t.Commit();
@@ -219,58 +174,45 @@ namespace SinoTunnel
                     {
                         string inverted_arc_name = ia_name[0];
 
-                        List<FamilySymbol> invert_profiles = new FilteredElementCollector(edit_doc)
-                        .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                        (x => x.Name.Contains(inverted_arc_name)).ToList();
+                        List<FamilySymbol> invert_profiles = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                             .Cast<FamilySymbol>().ToList().Where(x => x.Name.Contains(inverted_arc_name)).ToList();
 
                         //根據不同偏移量製造輪廓
                         t.Start("製造輪廓");
 
                         //先為仰拱寫入試算表之參數
-                        foreach (FamilySymbol invert_profile in invert_profiles)
-                            input_properties(invert_profile, rf.properties);
+                        foreach (FamilySymbol invert_profile in invert_profiles) { input_properties(invert_profile, rf.properties); }
 
                         for (int i = 0; i < offset_distinct.Count; i++)
                         {
                             try
                             {
-                                FamilySymbol invert_profile_positive = new FilteredElementCollector(edit_doc)
-                                    .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                    (x => x.Name == inverted_arc_name + "_正偏移量").First();
-                                FamilySymbol invert_profile_negative = new FilteredElementCollector(edit_doc)
-                                    .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                    (x => x.Name == inverted_arc_name + "_負偏移量").First();
+                                FamilySymbol invert_profile_positive = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                                       .Cast<FamilySymbol>().ToList().Where(x => x.Name == inverted_arc_name + "_正偏移量").First();
+                                FamilySymbol invert_profile_negative = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                                       .Cast<FamilySymbol>().ToList().Where(x => x.Name == inverted_arc_name + "_負偏移量").First();
                                 FamilySymbol new_invert_profile = null;
 
                                 if (offset_distinct[i] >= 0)
                                 {
-                                    try
-                                    {
-                                        new_invert_profile = invert_profile_positive.Duplicate(inverted_arc_name + "_偏移量=" + offset_distinct[i].ToString()) as FamilySymbol;
-                                    }
+                                    try { new_invert_profile = invert_profile_positive.Duplicate(inverted_arc_name + "_偏移量=" + offset_distinct[i].ToString()) as FamilySymbol; }
                                     catch { }
                                 }
                                 else
                                 {
-                                    try
-                                    {
-                                        new_invert_profile = invert_profile_negative.Duplicate(inverted_arc_name + "_偏移量=" + offset_distinct[i].ToString()) as FamilySymbol;
-                                    }
+                                    try { new_invert_profile = invert_profile_negative.Duplicate(inverted_arc_name + "_偏移量=" + offset_distinct[i].ToString()) as FamilySymbol; }
                                     catch { }
                                 }
-                                try
-                                {
+                                try 
+                                { 
                                     new_invert_profile.LookupParameter("偏移量").Set((Math.Abs(offset_distinct[i]) / 304.8));
+                                    double walkway_edge_to_rail_center_dis = rf.properties.walkway_edge_to_rail_center_dis + offset_distinct[i];
+                                    try { new_invert_profile.LookupParameter("走道邊緣與隧道中心距離").SetValueString(walkway_edge_to_rail_center_dis.ToString()); } // 培文改寫
+                                    catch (Exception) { new_invert_profile.LookupParameter("走道邊緣與軌道中心距離").SetValueString(walkway_edge_to_rail_center_dis.ToString()); } // 舊版Excel&族群
                                 }
                                 catch { }
-                                //if (times == 1 || 0)
-                                //{
-                                //    new_invert_profile.LookupParameter("偏移量").Set((Math.Abs(offset_distinct[i]) / 304.8));
-                                //}
-                                //else
-                                //{
-                                //    new_invert_profile.LookupParameter("偏移量").Set((offset_distinct[i] - offset_distinct[i]) / 304.8);
-                                //}
+                                //if (times == 1 || 0) { new_invert_profile.LookupParameter("偏移量").Set((Math.Abs(offset_distinct[i]) / 304.8)); }
+                                //else { new_invert_profile.LookupParameter("偏移量").Set((offset_distinct[i] - offset_distinct[i]) / 304.8); }
                             }
                             catch (Exception e) { TaskDialog.Show("error", e.Message + e.StackTrace); }
                         }
@@ -294,13 +236,10 @@ namespace SinoTunnel
                             bool isSolid = true;
                             Line path = Line.CreateBound(all_data_list_tunnel[times][i].start_point, all_data_list_tunnel[times][i - 1].start_point);
 
-                            FamilySymbol start_famsy = new FilteredElementCollector(edit_doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == inverted_arc_name + "_偏移量=" + offset_list[i - 1].ToString()).First();
-
-                            FamilySymbol end_famsy = new FilteredElementCollector(edit_doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == inverted_arc_name + "_偏移量=" + offset_list[i].ToString()).First();
+                            FamilySymbol start_famsy = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                                                       .ToList().Where(x => x.Name == inverted_arc_name + "_偏移量=" + offset_list[i - 1].ToString()).First();
+                            FamilySymbol end_famsy = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                                                     .ToList().Where(x => x.Name == inverted_arc_name + "_偏移量=" + offset_list[i].ToString()).First();
 
                             SweepProfile sweepProfile_top = edit_doc.Application.Create.NewFamilySymbolProfile(start_famsy);
                             SweepProfile sweepProfile_bottom = edit_doc.Application.Create.NewFamilySymbolProfile(end_famsy);
@@ -341,32 +280,25 @@ namespace SinoTunnel
                             //空心平版式道床
                             if (inverted_arc_name != "浮動式道床仰拱")
                             {
-                                FamilySymbol bed_profile = new FilteredElementCollector(edit_doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == "平版式道床").First();
+                                FamilySymbol bed_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                           .Cast<FamilySymbol>().ToList().Where(x => x.Name == "平版式道床").First();
                                 input_properties(bed_profile, rf.properties);
                                 SweepProfile bed_sweep_profile = edit_doc.Application.Create.NewFamilySymbolProfile(bed_profile);
                                 empty_bed = edit_doc.FamilyCreate.NewSweep(false, multi_path, bed_sweep_profile, 0, ProfilePlaneLocation.Start);
                                 empty_bed.LookupParameter("角度").Set((Math.PI / 180) * -90);
                             }
 
-
                             //空心電纜溝槽
-                            FamilySymbol powercable_gutter_profile = new FilteredElementCollector(edit_doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == "空心電纜溝槽").First();
+                            FamilySymbol powercable_gutter_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                                     .Cast<FamilySymbol>().ToList().Where(x => x.Name == "空心電纜溝槽").First();
                             input_properties(powercable_gutter_profile, rf.properties);
                             // 培文改寫
-                            double offset = rf.properties.walkway_edge_to_rail_center_dis - offset_list[i - 1]; // 走道邊緣與隧道中心距離 - 偏移量
+                            double offset = rf.properties.walkway_edge_to_rail_center_dis/* - offset_list[i - 1]*/; // 走道邊緣與隧道中心距離 - 偏移量
                             try { powercable_gutter_profile.LookupParameter("走道邊緣與隧道中心距離").Set(offset / 304.8); }
                             catch (Exception) { powercable_gutter_profile.LookupParameter("走道邊緣與軌道中心距離").Set(offset / 304.8); }
 
-                            //if (times == 1)
-                            //{
-                            //    powercable_gutter_profile.LookupParameter("偏移量").Set((offset_distinct[0] - offset_distinct[0]) / 304.8);
-                            //}
-                            //else
-                            //{
-                            //    powercable_gutter_profile.LookupParameter("偏移量").Set(offset_distinct[0] / 304.8);
-                            //}
+                            //if (times == 1) { powercable_gutter_profile.LookupParameter("偏移量").Set((offset_distinct[0] - offset_distinct[0]) / 304.8); }
+                            //else { powercable_gutter_profile.LookupParameter("偏移量").Set(offset_distinct[0] / 304.8); }
 
                             SweepProfile powercable_gutter_sweep_profile = edit_doc.Application.Create.NewFamilySymbolProfile(powercable_gutter_profile);
                             //以隧道線形建置
@@ -390,8 +322,8 @@ namespace SinoTunnel
                             //空心PVC管仰拱
                             if (gutter_name == "PVC管排水溝")
                             {
-                                FamilySymbol semicircle_gutter_profile = new FilteredElementCollector(edit_doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == "PVC管仰拱").First();
+                                FamilySymbol semicircle_gutter_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                                         .Cast<FamilySymbol>().ToList().Where(x => x.Name == "PVC管仰拱").First();
                                 input_properties(semicircle_gutter_profile, rf.properties);
                                 SweepProfile semicircle_gutter_sweep_profile = edit_doc.Application.Create.NewFamilySymbolProfile(semicircle_gutter_profile);
                                 Sweep empty_semicircle_gutter = edit_doc.FamilyCreate.NewSweep(false, multi_path, semicircle_gutter_sweep_profile, 0, ProfilePlaneLocation.Start);
@@ -423,13 +355,11 @@ namespace SinoTunnel
                                 double gutter_start_station_depth = start_station_depth + n * (i - 2 - gutter_station_total);
                                 double gutter_end_station_depth = start_station_depth + n * (i + 1 - gutter_station_total);
 
-                                FamilySymbol gutter_profile_start = new FilteredElementCollector(edit_doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                (x => x.Name == gutter_name + "_PVC管圓心深度=" + gutter_start_station_depth.ToString()).First();
+                                FamilySymbol gutter_profile_start = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                                                                    .ToList().Where(x => x.Name == gutter_name + "_PVC管圓心深度=" + gutter_start_station_depth.ToString()).First();
 
-                                FamilySymbol gutter_profile_end = new FilteredElementCollector(edit_doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                (x => x.Name == gutter_name + "_PVC管圓心深度=" + gutter_end_station_depth.ToString()).First();
+                                FamilySymbol gutter_profile_end = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                                                                  .ToList().Where(x => x.Name == gutter_name + "_PVC管圓心深度=" + gutter_end_station_depth.ToString()).First();
 
                                 SweepProfile sweepProfile_top2 = edit_doc.Application.Create.NewFamilySymbolProfile(gutter_profile_start);
                                 SweepProfile sweepProfile_bottom2 = edit_doc.Application.Create.NewFamilySymbolProfile(gutter_profile_end);
@@ -464,8 +394,8 @@ namespace SinoTunnel
 
                                         gutter_end_station_depth = start_station_depth + n * (i - gutter_station_total);
 
-                                        FamilySymbol hollow_profile = new FilteredElementCollector(edit_doc)
-                                        .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == "PVC管明溝_PVC管圓心深度=" + gutter_end_station_depth.ToString()).First();
+                                        FamilySymbol hollow_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                                                                      .ToList().Where(x => x.Name == "PVC管明溝_PVC管圓心深度=" + gutter_end_station_depth.ToString()).First();
                                         SweepProfile hollow_sweep_profile = edit_doc.Application.Create.NewFamilySymbolProfile(hollow_profile);
                                         Sweep empty_hollow = edit_doc.FamilyCreate.NewSweep(false, multi_path_middle, hollow_sweep_profile, 0, ProfilePlaneLocation.Start);
 
@@ -485,8 +415,8 @@ namespace SinoTunnel
 
                                         gutter_start_station_depth = start_station_depth + n * (i - 1 - gutter_station_total);
 
-                                        FamilySymbol hollow_profile = new FilteredElementCollector(edit_doc)
-                                        .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == "PVC管明溝_PVC管圓心深度=" + gutter_start_station_depth.ToString()).First();
+                                        FamilySymbol hollow_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>()
+                                                                      .ToList().Where(x => x.Name == "PVC管明溝_PVC管圓心深度=" + gutter_start_station_depth.ToString()).First();
                                         SweepProfile hollow_sweep_profile = edit_doc.Application.Create.NewFamilySymbolProfile(hollow_profile);
                                         Sweep empty_hollow = edit_doc.FamilyCreate.NewSweep(false, multi_path_middle, hollow_sweep_profile, 0, ProfilePlaneLocation.Start);
 
@@ -502,14 +432,8 @@ namespace SinoTunnel
                                 FamilySymbol gutter_profile = new FilteredElementCollector(edit_doc)
                                 .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == gutter_name).First();
 
-                                if (gutter_name == "浮動式排水溝")
-                                {
-                                    input_properties(gutter_profile, rf.properties);
-                                }
-                                else if (gutter_name == "標準排水溝")
-                                {
-                                    input_properties(gutter_profile, rf.properties);
-                                }
+                                if (gutter_name == "浮動式排水溝") { input_properties(gutter_profile, rf.properties); }
+                                else if (gutter_name == "標準排水溝") { input_properties(gutter_profile, rf.properties); }
                                 SweepProfile gutter_sweep_profile = edit_doc.Application.Create.NewFamilySymbolProfile(gutter_profile);
                                 Sweep empty_gutter = edit_doc.FamilyCreate.NewSweep(false, multi_path, gutter_sweep_profile, 0, ProfilePlaneLocation.Start);
                                 empty_gutter.LookupParameter("角度").Set((Math.PI / 180) * -90);
@@ -520,9 +444,8 @@ namespace SinoTunnel
                                 if (gutter_name == "標準排水溝")
                                 {
                                     Line path_2 = Line.CreateBound(all_data_list[times][i].start_point, all_data_list[times][i - 1].start_point);
-                                    FamilySymbol fms_2 = new FilteredElementCollector(edit_doc)
-                                                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                                            (x => x.Name == "標準排水溝蓋板").First();
+                                    FamilySymbol fms_2 = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                         .Cast<FamilySymbol>().ToList().Where(x => x.Name == "標準排水溝蓋板").First();
                                     input_properties(fms_2, rf.properties);
                                     SweepProfile sweepProfile_2 = edit_doc.Application.Create.NewFamilySymbolProfile(fms_2);
                                     SketchPlane sketchPlane_2 = Sketch_plain(edit_doc, all_data_list[times][i].start_point, all_data_list[times][i - 1].start_point);
@@ -556,8 +479,7 @@ namespace SinoTunnel
 
                             //combine elements
                             elementArray.Append(sweptBlend);
-                            if (inverted_arc_name != "浮動式道床仰拱")
-                                elementArray.Append(empty_bed);
+                            if (inverted_arc_name != "浮動式道床仰拱") { elementArray.Append(empty_bed); }                                
                             elementArray.Append(empty_powercable_gutter);
                             //elementArray.Append(empty_semicircle_gutter);
                             edit_doc.CombineElements(elementArray);
@@ -571,13 +493,12 @@ namespace SinoTunnel
                         bool isSolid = true;
                         Line path = Line.CreateBound(all_data_list_tunnel[times][i].start_point, all_data_list_tunnel[times][i - 1].start_point);
 
-                        FamilySymbol fms = new FilteredElementCollector(edit_doc)
-                        .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                        (x => x.Name == "混凝土蓋板").First();
+                        FamilySymbol fms = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                           .Cast<FamilySymbol>().ToList().Where(x => x.Name == "混凝土蓋板").First();
 
                         input_properties(fms, rf.properties);
                         // 培文改寫
-                        double offset = rf.properties.walkway_edge_to_rail_center_dis - offset_list[i - 1]; // 走道邊緣與隧道中心距離 - 偏移量
+                        double offset = rf.properties.walkway_edge_to_rail_center_dis/* - offset_list[i - 1]*/; // 走道邊緣與隧道中心距離 - 偏移量
                         try { fms.LookupParameter("走道邊緣與隧道中心距離").Set(offset / 304.8); }
                         catch (Exception) { fms.LookupParameter("走道邊緣與軌道中心距離").Set(offset / 304.8); }
                         //if (times == 1)
@@ -632,15 +553,11 @@ namespace SinoTunnel
                     Transaction pro_t = new Transaction(doc);
                     pro_t.SetFailureHandlingOptions(options);
                     pro_t.Start("載入族群");
-                    try
-                    {
-                        doc.LoadFamily(path + "仰拱\\仰拱final_" + times.ToString() + ".rfa");
-                    }
+                    try { doc.LoadFamily(path + "仰拱\\仰拱final_" + times.ToString() + ".rfa"); }
                     catch (Exception e) { TaskDialog.Show("error", e.Message + e.StackTrace); }
 
-                    FamilySymbol invert_arc = new FilteredElementCollector(doc)
-                        .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                        (x => x.Name == "仰拱final_" + times.ToString()).First();
+                    FamilySymbol invert_arc = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol))
+                                              .Cast<FamilySymbol>().ToList().Where(x => x.Name == "仰拱final_" + times.ToString()).First();
                     invert_arc.Activate();
 
                     // 如果專案中未放置仰拱才擺放
@@ -649,10 +566,7 @@ namespace SinoTunnel
                         FamilyInstance findIns = new FilteredElementCollector(doc).OfCategory(BuiltInCategory.OST_GenericModel).WhereElementIsNotElementType().Where(x => x.Name.Equals(invert_arc.Name)).Cast<FamilyInstance>().FirstOrDefault();
                         if (findIns == null) { FamilyInstance object_acr = doc.Create.NewFamilyInstance(XYZ.Zero, invert_arc, StructuralType.NonStructural); }
                     }
-                    catch(Exception)
-                    {
-                        FamilyInstance object_acr = doc.Create.NewFamilyInstance(XYZ.Zero, invert_arc, StructuralType.NonStructural);
-                    }
+                    catch(Exception) { FamilyInstance object_acr = doc.Create.NewFamilyInstance(XYZ.Zero, invert_arc, StructuralType.NonStructural); }
                     pro_t.Commit();
                 }
             }
@@ -813,6 +727,60 @@ namespace SinoTunnel
                 fms.LookupParameter("PVC管半徑").Set(properties.pvc_radius / 304.8);
             }
         }
+        /// <summary>
+        ///  畫軌道、隧道的線
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="all_data_list"></param>
+        /// <param name="all_data_list_tunnel"></param>
+        private void DrawTrackAndTunnelLines(Document doc, IList<IList<data_object>> all_data_list_tunnel, IList<IList<data_object>> all_data_list)
+        {
+            List<Curve> curves = new List<Curve>();
+
+            foreach (IList<data_object> data_list_tunnel in all_data_list_tunnel) // 隧道線形
+            {
+                for (int i = 0; i < data_list_tunnel.Count; i++)
+                {
+                    try { Line line = Line.CreateBound(data_list_tunnel[i].start_point, data_list_tunnel[i + 1].start_point); curves.Add(line); }
+                    catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+                }
+            }
+            foreach (IList<data_object> data_list in all_data_list) // 軌道線形
+            {
+                for (int i = 0; i < data_list.Count; i++)
+                {
+                    try { Line line = Line.CreateBound(data_list[i].start_point, data_list[i + 1].start_point); curves.Add(line); }
+                    catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+                }
+            }
+            using (Transaction trans = new Transaction(doc, "畫線"))
+            {
+                trans.Start();
+                foreach (Curve curve in curves)
+                {
+                    try { DrawLine(doc, curve); } // 3D視圖中畫模型線
+                    catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+                }
+                trans.Commit();
+            }
+        }
+        /// <summary>
+        /// 3D視圖中畫模型線
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="curve"></param>
+        private void DrawLine(Document doc, Curve curve)
+        {
+            try
+            {
+                Line line = Line.CreateBound(curve.Tessellate()[0], curve.Tessellate()[curve.Tessellate().Count - 1]);
+                XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
+                Plane plane = Plane.CreateByNormalAndOrigin(normal, curve.Tessellate()[0]);
+                SketchPlane sketchPlane = SketchPlane.Create(doc, plane);
+                ModelCurve modelCurve = doc.Create.NewModelCurve(line, sketchPlane);
+            }
+            catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+        }
         // 關閉警示視窗 
         public class CloseWarnings : IFailuresPreprocessor
         {
@@ -840,23 +808,6 @@ namespace SinoTunnel
                 //}
                 return FailureProcessingResult.Continue;
             }
-        }
-        /// <summary>
-        /// 3D視圖中畫模型線
-        /// </summary>
-        /// <param name="doc"></param>
-        /// <param name="curve"></param>
-        private void DrawLine(Document doc, Curve curve)
-        {
-            try
-            {
-                Line line = Line.CreateBound(curve.Tessellate()[0], curve.Tessellate()[curve.Tessellate().Count - 1]);
-                XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
-                Plane plane = Plane.CreateByNormalAndOrigin(normal, curve.Tessellate()[0]);
-                SketchPlane sketchPlane = SketchPlane.Create(doc, plane);
-                ModelCurve modelCurve = doc.Create.NewModelCurve(line, sketchPlane);
-            }
-            catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
         }
         // 更新專案內Family的參數
         public class LoadOptions : IFamilyLoadOptions
