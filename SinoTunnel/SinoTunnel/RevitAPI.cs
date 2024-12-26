@@ -44,16 +44,16 @@ namespace SinoTunnel
         /// <returns></returns>        
         public static double ConvertFromInternalUnits(double number, string unit)
         {
-            if (unit.Equals("meters"))
-            {
-                number = UnitUtils.ConvertFromInternalUnits(number, DisplayUnitType.DUT_METERS); // 2020
-                //number = UnitUtils.ConvertFromInternalUnits(number, UnitTypeId.Meters); // 2022
-            }
-            else if (unit.Equals("millimeters"))
-            {
-                number = UnitUtils.ConvertFromInternalUnits(number, DisplayUnitType.DUT_MILLIMETERS); // 2020
-                //number = UnitUtils.ConvertFromInternalUnits(number, UnitTypeId.Millimeters); // 2022
-            }
+            //if (unit.Equals("meters"))
+            //{
+            //    number = UnitUtils.ConvertFromInternalUnits(number, DisplayUnitType.DUT_METERS); // 2020
+            //    //number = UnitUtils.ConvertFromInternalUnits(number, UnitTypeId.Meters); // 2022
+            //}
+            //else if (unit.Equals("millimeters"))
+            //{
+            //    number = UnitUtils.ConvertFromInternalUnits(number, DisplayUnitType.DUT_MILLIMETERS); // 2020
+            //    //number = UnitUtils.ConvertFromInternalUnits(number, UnitTypeId.Millimeters); // 2022
+            //}
             return number;
         }
         /// <summary>
@@ -64,16 +64,16 @@ namespace SinoTunnel
         /// <returns></returns>
         public static double ConvertToInternalUnits(double number, string unit)
         {
-            if (unit.Equals("meters"))
-            {
-                number = UnitUtils.ConvertToInternalUnits(number, DisplayUnitType.DUT_METERS); // 2020
-                //number = UnitUtils.ConvertToInternalUnits(number, UnitTypeId.Meters); // 2022
-            }
-            else if (unit.Equals("millimeters"))
-            {
-                number = UnitUtils.ConvertToInternalUnits(number, DisplayUnitType.DUT_MILLIMETERS); // 2020
-                //number = UnitUtils.ConvertToInternalUnits(number, UnitTypeId.Millimeters); // 2022
-            }
+            //if (unit.Equals("meters"))
+            //{
+            //    number = UnitUtils.ConvertToInternalUnits(number, DisplayUnitType.DUT_METERS); // 2020
+            //    //number = UnitUtils.ConvertToInternalUnits(number, UnitTypeId.Meters); // 2022
+            //}
+            //else if (unit.Equals("millimeters"))
+            //{
+            //    number = UnitUtils.ConvertToInternalUnits(number, DisplayUnitType.DUT_MILLIMETERS); // 2020
+            //    //number = UnitUtils.ConvertToInternalUnits(number, UnitTypeId.Millimeters); // 2022
+            //}
             return number;
         }
 

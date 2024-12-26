@@ -46,8 +46,8 @@ namespace SinoTunnel
                 {
                     trans.Start();
                     List<FamilyInstance> foundation_support_symbols = new FilteredElementCollector(ori_doc).OfCategory(BuiltInCategory.OST_GenericModel)
-                                                              .WhereElementIsNotElementType().Where(x => x.Name.Equals("鋼軌基鈑") || x.Name.Equals("第三軌支架_自"))
-                                                              .Cast<FamilyInstance>().ToList();
+                                                                      .WhereElementIsNotElementType().Where(x => x.Name.Equals("鋼軌基鈑") || x.Name.Equals("第三軌支架_自"))
+                                                                      .Cast<FamilyInstance>().ToList();
                     if (foundation_support_symbols.Count > 0) { ori_doc.Delete(foundation_support_symbols.Select(x => x.Id).ToList()); }
                     trans.Commit();
                 }
@@ -60,11 +60,7 @@ namespace SinoTunnel
                     setting_station setting_Station = all_list.Item2;
                     bool isRight = true;
                     int set_filped = 1;
-                    if (setting_Station.walk_way_station[0][0].ToString() == "左側")
-                    {
-                        isRight = false;
-                        set_filped = 0;
-                    }
+                    if (setting_Station.walk_way_station[0][0].ToString() == "左側") { isRight = false; set_filped = 0; }
 
                     UIDocument uidoc = app.OpenAndActivateDocument(path + "道床\\道床.rfa");
                     Document doc = uidoc.Document;
@@ -82,10 +78,7 @@ namespace SinoTunnel
 
                     //先對輪廓做參數化sus
                     List<double> angle_list = new List<double>();
-                    for (int i = 0; i < data_list.Count; i++)
-                    {
-                        angle_list.Add(Math.Round(data_list[i].super_high_angle, 10));
-                    }
+                    for (int i = 0; i < data_list.Count; i++) { angle_list.Add(Math.Round(data_list[i].super_high_angle, 10)); }
 
                     //取得角度種類，以確定要建置幾種輪廓
                     List<double> angle_distinct = angle_list.Distinct().ToList();
@@ -128,9 +121,8 @@ namespace SinoTunnel
                                 big_t.Start("製造輪廓");
                                 double angle = angle_distinct[i];
                                 string pa_and_ne = (angle >= 0) ? "_超高正" : "_超高負";
-                                FamilySymbol original_trackbed_profile = new FilteredElementCollector(doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                (x => x.Name == tb.name + pa_and_ne).First();
+                                FamilySymbol original_trackbed_profile = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol))
+                                                                         .Cast<FamilySymbol>().ToList().Where(x => x.Name == tb.name + pa_and_ne).First();
                                 try
                                 {
                                     FamilySymbol new_trackbed_profile = original_trackbed_profile.Duplicate(tb.name + "_angle=" + angle.ToString()) as FamilySymbol;
@@ -149,13 +141,9 @@ namespace SinoTunnel
 
                             station_delta = end_station - start_station;
 
-                            if (tb.name != "標準道床_右")
-                            {
-                                station_total += station_delta;
-                            }
+                            if (tb.name != "標準道床_右") { station_total += station_delta; }
 
                             //來開始掃掠混成
-
                             big_t.Start("掃掠混成");
                             for (int i = station_total - station_delta + 1; i <= station_total; i++)
                             {
@@ -164,13 +152,11 @@ namespace SinoTunnel
 
                                 Line t_path = Line.CreateBound(data_list[i].start_point, data_list[i - 1].start_point);
 
-                                FamilySymbol start = new FilteredElementCollector(doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                (x => x.Name == tb.name + "_angle=" + Math.Round(data_list[i - 1].super_high_angle, 10).ToString()).First();
+                                FamilySymbol start = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList()
+                                                     .Where(x => x.Name == tb.name + "_angle=" + Math.Round(data_list[i - 1].super_high_angle, 10).ToString()).First();
 
-                                FamilySymbol end = new FilteredElementCollector(doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                                (x => x.Name == tb.name + "_angle=" + Math.Round(data_list[i].super_high_angle, 10).ToString()).First();
+                                FamilySymbol end = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList()
+                                                   .Where(x => x.Name == tb.name + "_angle=" + Math.Round(data_list[i].super_high_angle, 10).ToString()).First();
 
                                 //TaskDialog.Show("test", tb.name);
                                 if (tb.name == "標準道床_左" || tb.name == "標準道床_右")
@@ -235,15 +221,8 @@ namespace SinoTunnel
                                 Blend.get_Parameter(BuiltInParameter.PROFILE2_ANGLE).SetValueString("90");
                             }
                             big_t.Commit();
-                            if (tb.name == "標準道床_左")
-                            {
-                                tb.name = "標準道床_右";
-                            }
-                            else if (tb.name == "標準道床_右" ^ tb.name == "平版式道床" ^ tb.name == "浮動式道床")
-                            {
-                                de = false;
-                                continue;
-                            }
+                            if (tb.name == "標準道床_左") { tb.name = "標準道床_右"; }
+                            else if (tb.name == "標準道床_右" ^ tb.name == "平版式道床" ^ tb.name == "浮動式道床") { de = false; continue; }
                         }
                     }
 
@@ -254,9 +233,8 @@ namespace SinoTunnel
                     //sub.Start();
                     double gauge = tb_properties.rail_gauge / 2.0; // 鋼軌軌距
                     double face_width = tb_properties.rail_face_width / 2.0; // 鋼軌面寬
-                    List<Family> orbit_family_list = new FilteredElementCollector(doc)
-                            .OfClass(typeof(Family)).Cast<Family>().ToList().Where
-                            (x => x.Name.Contains("鋼軌雛型")).ToList();
+                    List<Family> orbit_family_list = new FilteredElementCollector(doc).OfClass(typeof(Family))
+                                                     .Cast<Family>().ToList().Where(x => x.Name.Contains("鋼軌雛型")).ToList();
                     foreach (Family orbit_family in orbit_family_list)
                     {
                         if (gauge != 760)
@@ -272,10 +250,8 @@ namespace SinoTunnel
                                     .OfClass(typeof(CurveElement)).Cast<CurveElement>().Where(x => x.LineStyle.Name == "輪廓").ToList();
                             foreach (CurveElement arc in detailArc_list)
                             {
-                                if (arc.get_BoundingBox(orbit_doc.ActiveView).Max.X > 0)
-                                    right_profile.Add(arc.Id);
-                                else
-                                    left_profile.Add(arc.Id);
+                                if (arc.get_BoundingBox(orbit_doc.ActiveView).Max.X > 0) { right_profile.Add(arc.Id); }
+                                else { left_profile.Add(arc.Id); }
                             }
                             try
                             {
@@ -301,20 +277,16 @@ namespace SinoTunnel
                     big_t.Start("Steel Orbit");
                     //掃掠鋼軌及第三軌
                     subtran.Start();
-                    FamilySymbol orbit_R_profile = new FilteredElementCollector(doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == "鋼軌雛型_右").First();
-                    FamilySymbol orbit_L_profile = new FilteredElementCollector(doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == "鋼軌雛型_左").First();
+                    FamilySymbol orbit_R_profile = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol))
+                                                   .Cast<FamilySymbol>().ToList().Where(x => x.Name == "鋼軌雛型_右").First();
+                    FamilySymbol orbit_L_profile = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol))
+                                                   .Cast<FamilySymbol>().ToList().Where(x => x.Name == "鋼軌雛型_左").First();
                     SweepProfile orbit_R_sweep_profile = doc.Application.Create.NewFamilySymbolProfile(orbit_R_profile);
                     SweepProfile orbit_L_sweep_profile = doc.Application.Create.NewFamilySymbolProfile(orbit_L_profile);
-                    FamilySymbol third_profile = new FilteredElementCollector(doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == "第三軌_內").First();
-                    FamilySymbol third_outer_profile = new FilteredElementCollector(doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == "第三軌_外").First();
+                    FamilySymbol third_profile = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol))
+                                                 .Cast<FamilySymbol>().ToList().Where(x => x.Name == "第三軌_內").First();
+                    FamilySymbol third_outer_profile = new FilteredElementCollector(doc).OfClass(typeof(FamilySymbol))
+                                                       .Cast<FamilySymbol>().ToList().Where(x => x.Name == "第三軌_外").First();
                     //設定第三軌參數
                     third_profile.LookupParameter("高程").SetValueString(tb_properties.third_track_elevation.ToString());
                     third_profile.LookupParameter("鋼軌軌距").SetValueString(gauge.ToString());
@@ -345,8 +317,8 @@ namespace SinoTunnel
                         double fore_angle = -1 * data_list[i - 1].super_high_angle;
 
                         // 培文改寫
-                        this_angle = 90;
-                        fore_angle = 90;
+                        this_angle = 90 + (-1 * data_list[i].super_high_angle);
+                        fore_angle = 90 + (-1 * data_list[i - 1].super_high_angle);
 
                         steel_orbit_R_blend.get_Parameter(BuiltInParameter.PROFILE1_ANGLE).SetValueString(this_angle.ToString());
                         steel_orbit_R_blend.get_Parameter(BuiltInParameter.PROFILE2_ANGLE).SetValueString(fore_angle.ToString());
@@ -411,15 +383,11 @@ namespace SinoTunnel
                     Transaction ori_t = new Transaction(ori_doc);
                     SubTransaction ori_sub_t = new SubTransaction(ori_doc);
                     ori_t.Start("載入族群");
-                    try
-                    {
-                        ori_doc.LoadFamily(path + "道床\\instance\\道床final_" + count.ToString() + ".rfa");
-                    }
+                    try { ori_doc.LoadFamily(path + "道床\\instance\\道床final_" + count.ToString() + ".rfa"); }
                     catch { }
 
-                    FamilySymbol track_bed = new FilteredElementCollector(ori_doc)
-                        .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                        (x => x.Name == "道床final_" + count.ToString()).First();
+                    FamilySymbol track_bed = new FilteredElementCollector(ori_doc).OfClass(typeof(FamilySymbol))
+                                             .Cast<FamilySymbol>().ToList().Where(x => x.Name == "道床final_" + count.ToString()).First();
                     track_bed.Activate();
 
                     // 如果專案中未放置道床才擺放
@@ -428,17 +396,13 @@ namespace SinoTunnel
                         FamilyInstance findIns = new FilteredElementCollector(ori_doc).OfCategory(BuiltInCategory.OST_GenericModel).WhereElementIsNotElementType().Where(x => x.Name.Equals(track_bed.Name)).Cast<FamilyInstance>().FirstOrDefault();
                         if (findIns == null) { FamilyInstance object_acr = ori_doc.Create.NewFamilyInstance(XYZ.Zero, track_bed, StructuralType.NonStructural); }
                     }
-                    catch (Exception)
-                    {
-                        FamilyInstance object_acr = ori_doc.Create.NewFamilyInstance(XYZ.Zero, track_bed, StructuralType.NonStructural);
-                    }
+                    catch (Exception) { FamilyInstance object_acr = ori_doc.Create.NewFamilyInstance(XYZ.Zero, track_bed, StructuralType.NonStructural); }
                     ori_t.Commit();
 
                     ori_t.Start("第三軌和鋼軌基鈑");
 
-                    FamilySymbol foundation_symbol = new FilteredElementCollector(ori_doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == "鋼軌基鈑").First();
+                    FamilySymbol foundation_symbol = new FilteredElementCollector(ori_doc).OfClass(typeof(FamilySymbol))
+                                                     .Cast<FamilySymbol>().ToList().Where(x => x.Name == "鋼軌基鈑").First();
                     foundation_symbol.Activate();
                     //設定鋼軌基板參數
                     foundation_symbol.LookupParameter("厚").SetValueString(tb_properties.rail_base_thickness.ToString());
@@ -482,9 +446,8 @@ namespace SinoTunnel
 
                     int th_support_dis = int.Parse(tb_properties.third_bracket_spacing.ToString());
                     int th_support_num = ((data_list.Count - 1) * 1000 / th_support_dis) + 1;
-                    FamilySymbol support_symbol = new FilteredElementCollector(ori_doc)
-                            .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where
-                            (x => x.Name == "第三軌支架_自").First();
+                    FamilySymbol support_symbol = new FilteredElementCollector(ori_doc).OfClass(typeof(FamilySymbol))
+                                                  .Cast<FamilySymbol>().ToList().Where(x => x.Name == "第三軌支架_自").First();
                     support_symbol.Activate();
                     //設定第三軌參數
                     support_symbol.LookupParameter("第三軌與鋼軌距").SetValueString(tb_properties.third_steel_between_dis.ToString());
@@ -524,38 +487,21 @@ namespace SinoTunnel
 
                                 if (for_check_station >= start_st && for_check_station < end_st)
                                 {
-                                    if (setting_Station.third_rail_station[k][0] == "右側")
-                                    {
-                                        isRight = true;
-                                    }
-                                    else
-                                    {
-                                        isRight = false;
-                                    }
+                                    if (setting_Station.third_rail_station[k][0] == "右側") { isRight = true; }
+                                    else { isRight = false; }
                                 }
                             }
-
-                            if (isRight == false) // 培文改
-                            {
-                                every_support.Location.Rotate(rotate_axis, Math.PI);
-                            }
-                            //// 培文改
+                            // 培文改
+                            if (isRight == false) { every_support.Location.Rotate(rotate_axis, Math.PI); }
+                            every_support.Location.Rotate(toward, -Math.PI * angle / 180.0);
                             //int leftOrRight = LeftOrRight(data_list[b].start_point, data_list[b + 1].start_point, put_point);
-                            //if (isRight == true && leftOrRight == 1)
-                            //{
-                            //    every_support.Location.Rotate(rotate_axis, Math.PI);
-                            //}
+                            //if (isRight == true && leftOrRight == 1) { every_support.Location.Rotate(rotate_axis, Math.PI); }
 
 
-                            //if (isRight == true)
-                            //    every_support.Location.Rotate(toward, Math.PI * angle / 180.0);
-                            //else
-                            //    every_support.Location.Rotate(toward, -Math.PI * angle / 180.0);
 
-                            ////if ((data_list[1].start_point.X - data_list[0].start_point.X) > 0)
-                            ////{
-                            ////    every_support.Location.Rotate(rotate_axis, Math.PI);
-                            ////}
+                            //if (isRight == true) { every_support.Location.Rotate(toward, Math.PI * angle / 180.0); }
+                            //else { every_support.Location.Rotate(toward, -Math.PI * angle / 180.0); }
+                            //if ((data_list[1].start_point.X - data_list[0].start_point.X) > 0) { every_support.Location.Rotate(rotate_axis, Math.PI); }
 
                             //every_support.Location.Rotate(rotate_axis, Math.PI);
 

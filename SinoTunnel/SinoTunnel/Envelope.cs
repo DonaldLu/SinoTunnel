@@ -40,7 +40,7 @@ namespace SinoTunnel
             create_envelop(all_envelopes, app, rf, doc); // 建置動態、車輛包絡線
             create_envelop_third(all_envelopes_third, app, doc); // 建置第三軌包絡線
 
-            TaskDialog.Show("result", "好惹。");
+            TaskDialog.Show("result", "完成。");
         }
         /// <summary>
         /// 建置動態、車輛包絡線

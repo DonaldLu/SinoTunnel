@@ -429,8 +429,8 @@ namespace SinoTunnel
                             //以掃略方式建立其他種類排水溝
                             else
                             {
-                                FamilySymbol gutter_profile = new FilteredElementCollector(edit_doc)
-                                .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == gutter_name).First();
+                                FamilySymbol gutter_profile = new FilteredElementCollector(edit_doc).OfClass(typeof(FamilySymbol))
+                                                              .Cast<FamilySymbol>().ToList().Where(x => x.Name == gutter_name).First();
 
                                 if (gutter_name == "浮動式排水溝") { input_properties(gutter_profile, rf.properties); }
                                 else if (gutter_name == "標準排水溝") { input_properties(gutter_profile, rf.properties); }

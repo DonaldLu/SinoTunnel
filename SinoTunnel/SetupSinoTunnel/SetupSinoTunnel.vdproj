@@ -13,36 +13,6 @@
 "SccProvider" = "8:"
     "Hierarchy"
     {
-        "Entry"
-        {
-        "MsmKey" = "8:_0189A794FB554D7ABF524D4F6DE2264D"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_8CB59979ECEF430994FD5E198ABB7EE0"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_A9D0E2DB58A64E2C928229123104FAEB"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_DC77B1A53FD0453E8823A95E90BE2B24"
-        "OwnerKey" = "8:_UNDEFINED"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_DC77B1A53FD0453E8823A95E90BE2B24"
-        "MsmSig" = "8:_UNDEFINED"
-        }
     }
     "Configurations"
     {
@@ -138,97 +108,6 @@
         }
         "File"
         {
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_0189A794FB554D7ABF524D4F6DE2264D"
-            {
-            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\2019\\SinoTunnel.addin"
-            "TargetName" = "8:SinoTunnel.addin"
-            "Tag" = "8:"
-            "Folder" = "8:_9A23A68FE6FC460ABC5B51FDECEE5AB1"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_8CB59979ECEF430994FD5E198ABB7EE0"
-            {
-            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\2018\\SinoTunnel.addin"
-            "TargetName" = "8:SinoTunnel.addin"
-            "Tag" = "8:"
-            "Folder" = "8:_F4ED539428D644B49D6E118A8DABBB9F"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{1FB2D0AE-D3B9-43D4-B9DD-F88EC61E35DE}:_A9D0E2DB58A64E2C928229123104FAEB"
-            {
-            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\2020\\SinoTunnel.addin"
-            "TargetName" = "8:SinoTunnel.addin"
-            "Tag" = "8:"
-            "Folder" = "8:_3BC30617D1B74D01971AB412C0F4EF46"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_DC77B1A53FD0453E8823A95E90BE2B24"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:SinoTunnel, Version=1.0.1.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_DC77B1A53FD0453E8823A95E90BE2B24"
-                    {
-                    "Name" = "8:SinoTunnel.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:C:\\Users\\07291\\AppData\\Roaming\\Autodesk\\Revit\\Addins\\SinoTunnel\\SinoTunnel.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_7AD1E1B444CB4B939E38088E5C6DCEBF"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:FALSE"
-            "IsolateTo" = "8:"
-            }
         }
         "FileType"
         {
@@ -245,50 +124,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_3BC30617D1B74D01971AB412C0F4EF46"
-                    {
-                    "Name" = "8:2020"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_BDE312B09A6C43368E1D679FDAE284E9"
-                        "Folders"
-                        {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_7AD1E1B444CB4B939E38088E5C6DCEBF"
-                    {
-                    "Name" = "8:SinoTunnel"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_7C8C7E8A461146B7B824978E93712A62"
-                        "Folders"
-                        {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_9A23A68FE6FC460ABC5B51FDECEE5AB1"
-                    {
-                    "Name" = "8:2019"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_AE0ED56FD5AC43C79C59D38137E2ED44"
-                        "Folders"
-                        {
-                        }
-                    }
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_F4ED539428D644B49D6E118A8DABBB9F"
-                    {
-                    "Name" = "8:2018"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_1B7E1C210D3B4482B9C1E5F129858C2A"
-                        "Folders"
-                        {
-                        }
-                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_CFF38B4118D44BA3BE545D111280857D"
@@ -329,15 +164,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SetupSinoTunnel"
-        "ProductCode" = "8:{EFD27F45-62D5-451A-82F1-10339EEB3C36}"
-        "PackageCode" = "8:{64EC963B-3D42-4DF2-8136-E087A34684A7}"
+        "ProductCode" = "8:{2AFE6F36-C29D-4B85-A2B4-1829C1251F44}"
+        "PackageCode" = "8:{7F26F8AE-88E0-4D03-BA0B-9E1BFD1B9AF0}"
         "UpgradeCode" = "8:{797EE6CD-218A-479E-A690-70A1F7C18383}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.6"
+        "ProductVersion" = "8:1.0.7"
         "Manufacturer" = "8:中興工程_軌道二部"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"

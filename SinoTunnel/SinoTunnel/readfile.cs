@@ -220,58 +220,22 @@ namespace SinoTunnel
             {
                 double X = 0, Y = 0, Z = 0;
                 data_object data = new data_object();
-                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null)
-                {
-                    break;
-                }
+                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
                 for (int j = 1; j <= xlRange.Columns.Count; j++)
                 {
-
                     //write the value to the console
                     if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
-                        if (j == 1)
-                        {
-                            Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id);
-                        }
-                        else if (j == 2)
-                        {
-                            data.station = xlRange.Cells[i, j].Value2.ToString();
-                        }
-                        else if (j == 3)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X);
-                            //X = X / 0.3048;
-                            X = RevitAPI.ConvertToInternalUnits(X, "meters"); // 公英制轉換
-                        }
-                        else if (j == 4)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y);
-                            //Y = Y / 0.3048;
-                            Y = RevitAPI.ConvertToInternalUnits(Y, "meters"); // 公英制轉換
-                        }
-                        else if (j == 5)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z);
-                            //Z = Z / 0.3048;
-                            Z = RevitAPI.ConvertToInternalUnits(Z, "meters"); // 公英制轉換
-                        }
-                        else if (j == 7)
-                        {
-
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.horizontal_angle);
-                        }
-                        else if (j == 9)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle);
-                        }
-                        else if (j == 10)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.offset);
-                        }
-                        else if (j == 11)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle);
-                        }
+                    {
+                        if (j == 1) { Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id); }
+                        else if (j == 2) { data.station = xlRange.Cells[i, j].Value2.ToString(); }
+                        else if (j == 3) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X); X = X / 0.3048; }
+                        else if (j == 4) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y); Y = Y / 0.3048; }
+                        else if (j == 5) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z); Z = Z / 0.3048; }
+                        else if (j == 7) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.horizontal_angle); }
+                        else if (j == 9) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle); }
+                        else if (j == 10) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.offset); }
+                        else if (j == 11) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle); }
+                    }
 
                     //add useful things here!   
                 }
@@ -280,10 +244,7 @@ namespace SinoTunnel
                 data_list_tunnel.Add(data);
                 foreach (string ele in chs_pts)
                 {
-                    if (data.station == ele)
-                    {
-                        data_list_cd_channel.Add(data);
-                    }
+                    if (data.station == ele) { data_list_cd_channel.Add(data); }
                 }
             }
             string message = "";
@@ -312,58 +273,22 @@ namespace SinoTunnel
             {
                 double X = 0, Y = 0, Z = 0;
                 data_object data = new data_object();
-                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null)
-                {
-                    break;
-                }
+                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
                 for (int j = 1; j <= xlRange.Columns.Count; j++)
                 {
-
                     //write the value to the console
                     if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
-                        if (j == 1)
-                        {
-                            Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id);
-                        }
-                        else if (j == 2)
-                        {
-                            data.station = xlRange.Cells[i, j].Value2.ToString();
-                        }
-                        else if (j == 3)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X);
-                            //X = X / 0.3048;
-                            X = RevitAPI.ConvertToInternalUnits(X, "meters"); // 公英制轉換
-                        }
-                        else if (j == 4)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y);
-                            //Y = Y / 0.3048;
-                            Y = RevitAPI.ConvertToInternalUnits(Y, "meters"); // 公英制轉換
-                        }
-                        else if (j == 5)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z);
-                            //Z = Z / 0.3048;
-                            Z = RevitAPI.ConvertToInternalUnits(Z, "meters"); // 公英制轉換
-                        }
-                        else if (j == 7)
-                        {
-
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.horizontal_angle);
-                        }
-                        else if (j == 9)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle);
-                        }
-                        else if (j == 10)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.offset);
-                        }
-                        else if (j == 11)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle);
-                        }
+                    {
+                        if (j == 1) { Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id); }
+                        else if (j == 2) { data.station = xlRange.Cells[i, j].Value2.ToString(); }
+                        else if (j == 3) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X); X = X / 0.3048; }
+                        else if (j == 4) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y); Y = Y / 0.3048; }
+                        else if (j == 5) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z); Z = Z / 0.3048; }
+                        else if (j == 7) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.horizontal_angle); }
+                        else if (j == 9) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle); }
+                        else if (j == 10) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.offset); }
+                        else if (j == 11) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle); }
+                    }
 
                     //add useful things here!   
                 }
@@ -371,10 +296,7 @@ namespace SinoTunnel
                 data_list_tunnel2.Add(data);
                 foreach (string ele in chs_pts)
                 {
-                    if (data.station == ele)
-                    {
-                        data_list_cd_channel2.Add(data);
-                    }
+                    if (data.station == ele) { data_list_cd_channel2.Add(data); }
                 }
             }
             xlWorkbook.Close();
@@ -405,10 +327,7 @@ namespace SinoTunnel
                     bool success; //default
                     double double_temp = double.NaN;
                     int int_temp = 0;
-                    try
-                    {
-                        name = xlRange.Cells[i, 1].Value2.ToString();
-                    }
+                    try { name = xlRange.Cells[i, 1].Value2.ToString(); }
                     catch { continue; }
 
                     switch (name)
@@ -679,57 +598,26 @@ namespace SinoTunnel
             {
                 double X = 0, Y = 0, Z = 0;
                 data_object data = new data_object();
-                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null)
-                {
-                    break;
-                }
+                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
                 for (int j = 1; j <= xlRange.Columns.Count; j++)
                 {
-
                     //write the value to the console
                     if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
-                        if (j == 1)
-                        {
-                            Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id);
-                        }
-                        else if (j == 2)
-                        {
-                            data.station = xlRange.Cells[i, j].Value2.ToString();
-                        }
-                        else if (j == 3)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X);
-                            //X = X / 0.3048;
-                            X = RevitAPI.ConvertToInternalUnits(X, "meters"); // 公英制轉換
-                        }
-                        else if (j == 4)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y);
-                            //Y = Y / 0.3048;
-                            Y = RevitAPI.ConvertToInternalUnits(Y, "meters"); // 公英制轉換
-                        }
-                        else if (j == 5)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z);
-                            //Z = Z / 0.3048;
-                            Z = RevitAPI.ConvertToInternalUnits(Z, "meters"); // 公英制轉換
-                        }
-                        else if (j == 6)
-                        {
-
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle);
-                        }
-                    /*else if (j == 9)
                     {
-                        double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle);
-                    }*/
+                        if (j == 1) { Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id); }
+                        else if (j == 2) { data.station = xlRange.Cells[i, j].Value2.ToString(); }
+                        else if (j == 3) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X); X = X / 0.3048; }
+                        else if (j == 4) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y); Y = Y / 0.3048; }
+                        else if (j == 5) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z); Z = Z / 0.3048; }
+                        else if (j == 6) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle); }
+                    }
+                    //else if (j == 9) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle); }
 
                     //add useful things here!   
                 }
                 data.start_point = new XYZ(X, Y, Z);
                 data_list.Add(data);
             }
-
             
             xlWorkbook.Close();
             xlApp.Quit();
@@ -751,50 +639,20 @@ namespace SinoTunnel
             {
                 double X = 0, Y = 0, Z = 0;
                 data_object data = new data_object();
-                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null)
-                {
-                    break;
-                }
+                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
                 for (int j = 1; j <= xlRange.Columns.Count; j++)
                 {
-
                     //write the value to the console
                     if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
-                        if (j == 1)
-                        {
-                            Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id);
-                        }
-                        else if (j == 2)
-                        {
-                            data.station = xlRange.Cells[i, j].Value2.ToString();
-                        }
-                        else if (j == 3)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X);
-                            //X = X / 0.3048;
-                            X = RevitAPI.ConvertToInternalUnits(X, "meters"); // 公英制轉換
-                        }
-                        else if (j == 4)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y);
-                            //Y = Y / 0.3048;
-                            Y = RevitAPI.ConvertToInternalUnits(Y, "meters"); // 公英制轉換
-                        }
-                        else if (j == 5)
-                        {
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z);
-                            //Z = Z / 0.3048;
-                            Z = RevitAPI.ConvertToInternalUnits(Z, "meters"); // 公英制轉換
-                        }
-                        else if (j == 6)
-                        {
-
-                            double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle);
-                        }
-                    /*else if (j == 9)
                     {
-                        double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle);
-                    }*/
+                        if (j == 1) { Int32.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.id); }
+                        else if (j == 2) { data.station = xlRange.Cells[i, j].Value2.ToString(); }
+                        else if (j == 3) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out X); X = X / 0.3048; }
+                        else if (j == 4) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Y); Y = Y / 0.3048; }
+                        else if (j == 5) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out Z); Z = Z / 0.3048; }
+                        else if (j == 6) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.super_high_angle); }
+                    }
+                    //else if (j == 9) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out data.vertical_angle); }
 
                     //add useful things here!   
                 }
@@ -822,10 +680,7 @@ namespace SinoTunnel
             for (int i = 2; i <= xlRange.Rows.Count; i++)
             {
                 string name = "";
-                try
-                {
-                    name = xlRange.Cells[i, 1].Value2.ToString();
-                }
+                try { name = xlRange.Cells[i, 1].Value2.ToString(); }
                 catch { continue; }
                 switch (name)
                 {
