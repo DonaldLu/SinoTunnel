@@ -1182,50 +1182,50 @@ namespace SinoTunnel
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["第三軌包絡線 (UP)"];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-
-            for (int i = 3; i <= xlRange.Rows.Count; i = i + 5)
+            envelope_object envelope_data = new envelope_object();
+            for (int i = 3; i <= xlRange.Rows.Count; i++)
             {
+                if (xlRange.Cells[i, 4].Value2 != null) { envelope_data = new envelope_object(); }
                 double mX = 0, mY = 0, mZ = 0;
-                envelope_object data = new envelope_object();
-                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null)
+                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
+                for (int j = 1; j <= 3; j++)
                 {
-                    break;
-                }
-
-                for (int k = 0; k < 5; k++)
-                {
-
-                    for (int j = 1; j <= xlRange.Columns.Count; j++)
+                    if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
                     {
-
-                        //write the value to the console
-                        if (xlRange.Cells[i + k, j] != null && xlRange.Cells[i + k, j].Value2 != null)
-                            if (j == 1)
-                            {
-                                double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mX);
-                                //mX = mX / 0.3048;
-                                mX = RevitAPI.ConvertToInternalUnits(mX, "meters"); // 公英制轉換
-                            }
-                            else if (j == 2)
-                            {
-                                double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mY);
-                                //mY = mY / 0.3048;
-                                mY = RevitAPI.ConvertToInternalUnits(mY, "meters"); // 公英制轉換
-                            }
-                            else if (j == 3)
-                            {
-                                double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mZ);
-                                //mZ = mZ / 0.3048;
-                                mZ = RevitAPI.ConvertToInternalUnits(mZ, "meters"); // 公英制轉換
-                            }
-
-                        //add useful things here!   
+                        if (j == 1) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out mX); mX = mX / 0.3048; }
+                        else if (j == 2) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out mY); mY = mY / 0.3048; }
+                        else if (j == 3) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out mZ); mZ = mZ / 0.3048; }
                     }
-                    XYZ m = new XYZ(mX, mY, mZ);
-                    data.third_envelope.Add(m);
                 }
-                envelope_3_1.Add(data);
+                XYZ m = new XYZ(mX, mY, mZ);
+                envelope_data.third_envelope.Add(m);
+                if (xlRange.Cells[i + 1, 4].Value2 != null || i == xlRange.Rows.Count) { envelope_3_1.Add(envelope_data); }
             }
+
+            //// 台大
+            //for (int i = 3; i <= xlRange.Rows.Count; i = i + 5)
+            //{
+            //    double mX = 0, mY = 0, mZ = 0;
+            //    envelope_object data = new envelope_object();
+            //    if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
+            //    for (int k = 0; k < 5; k++)
+            //    {
+            //        for (int j = 1; j <= xlRange.Columns.Count; j++)
+            //        {
+            //            //write the value to the console
+            //            if (xlRange.Cells[i + k, j] != null && xlRange.Cells[i + k, j].Value2 != null)
+            //            {
+            //                if (j == 1) { double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mX); mX = mX / 0.3048; }
+            //                else if (j == 2) { double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mY); mY = mY / 0.3048; }
+            //                else if (j == 3) { double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mZ); mZ = mZ / 0.3048; }
+            //                //add useful things here!
+            //            }
+            //        }
+            //        XYZ m = new XYZ(mX, mY, mZ);
+            //        data.third_envelope.Add(m);
+            //    }
+            //    envelope_3_1.Add(data);
+            //}
 
             xlWorkbook.Close();
             xlApp.Quit();
@@ -1243,50 +1243,50 @@ namespace SinoTunnel
             Excel._Worksheet xlWorksheet = xlWorkbook.Sheets["第三軌包絡線 (DN)"];
             Excel.Range xlRange = xlWorksheet.UsedRange;
 
-
-            for (int i = 3; i <= xlRange.Rows.Count; i = i + 5)
+            envelope_object envelope_data = new envelope_object();
+            for (int i = 3; i <= xlRange.Rows.Count; i++)
             {
+                if (xlRange.Cells[i, 4].Value2 != null) { envelope_data = new envelope_object(); }
                 double mX = 0, mY = 0, mZ = 0;
-                envelope_object data = new envelope_object();
-                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null)
+                if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
+                for (int j = 1; j <= 3; j++)
                 {
-                    break;
-                }
-
-                for (int k = 0; k < 5; k++)
-                {
-
-                    for (int j = 1; j <= xlRange.Columns.Count; j++)
+                    if (xlRange.Cells[i, j] != null && xlRange.Cells[i, j].Value2 != null)
                     {
-
-                        //write the value to the console
-                        if (xlRange.Cells[i + k, j] != null && xlRange.Cells[i + k, j].Value2 != null)
-                            if (j == 1)
-                            {
-                                double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mX);
-                                //mX = mX / 0.3048;
-                                mX = RevitAPI.ConvertToInternalUnits(mX, "meters"); // 公英制轉換
-                            }
-                            else if (j == 2)
-                            {
-                                double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mY);
-                                //mY = mY / 0.3048;
-                                mY = RevitAPI.ConvertToInternalUnits(mY, "meters"); // 公英制轉換
-                            }
-                            else if (j == 3)
-                            {
-                                double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mZ);
-                                //mZ = mZ / 0.3048;
-                                mZ = RevitAPI.ConvertToInternalUnits(mZ, "meters"); // 公英制轉換
-                            }
-
-                        //add useful things here!   
+                        if (j == 1) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out mX); mX = mX / 0.3048; }
+                        else if (j == 2) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out mY); mY = mY / 0.3048; }
+                        else if (j == 3) { double.TryParse(xlRange.Cells[i, j].Value2.ToString(), out mZ); mZ = mZ / 0.3048; }
                     }
-                    XYZ m = new XYZ(mX, mY, mZ);
-                    data.third_envelope.Add(m);
                 }
-                envelope_3_2.Add(data);
+                XYZ m = new XYZ(mX, mY, mZ);
+                envelope_data.third_envelope.Add(m);
+                if (xlRange.Cells[i + 1, 4].Value2 != null || i == xlRange.Rows.Count) { envelope_3_2.Add(envelope_data); }
             }
+
+            //// 台大
+            //for (int i = 3; i <= xlRange.Rows.Count; i = i + 5)
+            //{
+            //    double mX = 0, mY = 0, mZ = 0;
+            //    envelope_object data = new envelope_object();
+            //    if (xlRange.Cells[i, 1] == null || xlRange.Cells[i, 1].Value2 == null) { break; }
+            //    for (int k = 0; k < 5; k++)
+            //    {
+            //        for (int j = 1; j <= xlRange.Columns.Count; j++)
+            //        {
+            //            //write the value to the console
+            //            if (xlRange.Cells[i + k, j] != null && xlRange.Cells[i + k, j].Value2 != null)
+            //            {
+            //                if (j == 1) { double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mX); mX = mX / 0.3048; }
+            //                else if (j == 2) { double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mY); mY = mY / 0.3048; }
+            //                else if (j == 3) { double.TryParse(xlRange.Cells[i + k, j].Value2.ToString(), out mZ); mZ = mZ / 0.3048; }
+            //                //add useful things here!
+            //            }
+            //        }
+            //        XYZ m = new XYZ(mX, mY, mZ);
+            //        data.third_envelope.Add(m);
+            //    }
+            //    envelope_3_2.Add(data);
+            //}
 
             xlWorkbook.Close();
             xlApp.Quit();

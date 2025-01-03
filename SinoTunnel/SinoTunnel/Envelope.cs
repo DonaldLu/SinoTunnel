@@ -259,7 +259,7 @@ namespace SinoTunnel
                     //SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
                     //Curve line = Line.CreateBound(start_point, end_point);
 
-                    // 培文改寫
+                    //// 培文改寫
                     Line line = Line.CreateBound(start_point, end_point);
                     //XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
                     //Plane plane = Plane.CreateByNormalAndOrigin(normal, start_point);
@@ -271,7 +271,7 @@ namespace SinoTunnel
         void draw_profile_third(Document edit_doc, List<XYZ> point_list)
         {
             //TaskDialog.Show("message", point_list.Count.ToString());
-            //Plane plane = Plane.CreateByThreePoints(point_list[0], point_list[1], point_list[2]); // 台大
+            Plane plane = Plane.CreateByThreePoints(point_list[0], point_list[1], point_list[2]); // 台大
             //TaskDialog.Show("message", "2.1");
             for (int j = 0; j < 4; j++)
             {
@@ -280,12 +280,11 @@ namespace SinoTunnel
                 //SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
                 //Curve line = Line.CreateBound(start_point, end_point);
 
-                // 培文改寫
+                //// 培文改寫
                 Line line = Line.CreateBound(start_point, end_point);
-                XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
-                Plane plane = Plane.CreateByNormalAndOrigin(normal, start_point);
-                SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
-                edit_doc.FamilyCreate.NewModelCurve(line, skplane);
+                //XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
+                //Plane plane = Plane.CreateByNormalAndOrigin(normal, start_point);
+                edit_doc.FamilyCreate.NewModelCurve(line, Sketch_plain(edit_doc, start_point, end_point));
             }
         }
         void between_profile(Document edit_doc, IList<envelope_object> envelope_list, string en)
