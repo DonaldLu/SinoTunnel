@@ -469,7 +469,8 @@ namespace SinoTunnel
                             XYZ put_point = data_list[b].start_point + c / 304.8 * toward.Direction;
                             FamilyInstance every_support = ori_doc.Create.NewFamilyInstance(put_point, support_symbol, StructuralType.NonStructural);
 
-                            double toward_slope = Math.Abs(toward.Direction.Y / toward.Direction.X); // 培文改：Math.Abs
+                            double toward_slope = toward.Direction.Y / toward.Direction.X; // 台大
+                            //double toward_slope = Math.Abs(toward.Direction.Y / toward.Direction.X); // 培文改：Math.Abs
                             Line rotate_axis = Line.CreateBound(put_point, put_point + XYZ.BasisZ);
                             ElementTransformUtils.RotateElement(ori_doc, every_support.Id, rotate_axis, Math.Atan(toward_slope) + Math.PI / 2);
 

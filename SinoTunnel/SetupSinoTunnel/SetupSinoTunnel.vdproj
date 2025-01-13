@@ -124,6 +124,72 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_03B5D4C9E28B42039C8C57D5E4C11322"
+                    {
+                    "Name" = "8:2018"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_1FE0DE92080B4C818CACE3F819EF060A"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_2009DE0773244B0B8358E3D3CDD13682"
+                    {
+                    "Name" = "8:2021"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_B63A808AFF4D40CE826F10BE7EB00656"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_72BDD9D67A4D4A21A7094A90C5B238E2"
+                    {
+                    "Name" = "8:2019"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_2B98470D032745D0AD3B6D0895289B26"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_921F16B7A5174580A3C608359D46166D"
+                    {
+                    "Name" = "8:2020"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_0895C824D0CA4F39A460CB4AC80533F7"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_AFD740225A4A47BDBFE72B6C1779A78B"
+                    {
+                    "Name" = "8:SinoTunnel"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_85D77C00077749A0957C18928690BE9D"
+                        "Folders"
+                        {
+                        }
+                    }
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_C1BED7F69BF04264A9C2593CE71A46B8"
+                    {
+                    "Name" = "8:2022"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_62765CBDFBC64CB0AD75113803417379"
+                        "Folders"
+                        {
+                        }
+                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_CFF38B4118D44BA3BE545D111280857D"
@@ -164,15 +230,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:SetupSinoTunnel"
-        "ProductCode" = "8:{2AFE6F36-C29D-4B85-A2B4-1829C1251F44}"
-        "PackageCode" = "8:{7F26F8AE-88E0-4D03-BA0B-9E1BFD1B9AF0}"
+        "ProductCode" = "8:{BBAB38F3-E1E1-415C-9AA6-EF1F7B13733F}"
+        "PackageCode" = "8:{61469CE8-DD2F-4AC4-8751-6E1ECE43D1FB}"
         "UpgradeCode" = "8:{797EE6CD-218A-479E-A690-70A1F7C18383}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:TRUE"
         "InstallAllUsers" = "11:FALSE"
-        "ProductVersion" = "8:1.0.7"
+        "ProductVersion" = "8:1.0.8"
         "Manufacturer" = "8:中興工程_軌道二部"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:"
