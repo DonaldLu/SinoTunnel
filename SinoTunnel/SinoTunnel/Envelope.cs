@@ -277,14 +277,15 @@ namespace SinoTunnel
             {
                 XYZ start_point = point_list[j];
                 XYZ end_point = point_list[j + 1];
-                //SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
-                //Curve line = Line.CreateBound(start_point, end_point);
+                SketchPlane skplane = SketchPlane.Create(edit_doc, plane);
+                Curve line = Line.CreateBound(start_point, end_point);
+                edit_doc.FamilyCreate.NewModelCurve(line, skplane);
 
                 //// 培文改寫
-                Line line = Line.CreateBound(start_point, end_point);
+                //Line line = Line.CreateBound(start_point, end_point);
                 //XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
                 //Plane plane = Plane.CreateByNormalAndOrigin(normal, start_point);
-                edit_doc.FamilyCreate.NewModelCurve(line, Sketch_plain(edit_doc, start_point, end_point));
+                //edit_doc.FamilyCreate.NewModelCurve(line, Sketch_plain(edit_doc, start_point, end_point));
             }
         }
         void between_profile(Document edit_doc, IList<envelope_object> envelope_list, string en)
