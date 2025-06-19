@@ -289,12 +289,16 @@ namespace SinoTunnel
                 RebarHookOrientation.Left, RebarHookOrientation.Left);
             subt.Commit();
             subt.Start();
-            re.SetSolidInView(view3D, true);
-            re.SetUnobscuredInView(view3D, true);
-            re2.SetSolidInView(view3D, true);
-            re2.SetUnobscuredInView(view3D, true);
-            re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re.SetSolidInView(view3D, true);
+            //re.SetUnobscuredInView(view3D, true);
+            //re2.SetSolidInView(view3D, true);
+            //re2.SetUnobscuredInView(view3D, true);
+            //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { re, re2 };
+            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -379,15 +383,19 @@ namespace SinoTunnel
                 RebarHookOrientation.Right, RebarHookOrientation.Right);
 
 
-            re.SetSolidInView(view3D, true);
-            re.SetUnobscuredInView(view3D, true);
-            re2.SetSolidInView(view3D, true);
-            re2.SetUnobscuredInView(view3D, true);
-            re3.SetSolidInView(view3D, true);
-            re3.SetUnobscuredInView(view3D, true);
-            re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re.SetSolidInView(view3D, true);
+            //re.SetUnobscuredInView(view3D, true);
+            //re2.SetSolidInView(view3D, true);
+            //re2.SetUnobscuredInView(view3D, true);
+            //re3.SetSolidInView(view3D, true);
+            //re3.SetUnobscuredInView(view3D, true);
+            //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { re, re2, re3 };
+            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -493,24 +501,28 @@ namespace SinoTunnel
             Rebar R4_2 = Rebar.CreateFromCurvesAndShape(doc, M_03, barType16M, null, null, ele, plane.Normal, L4
                , RebarHookOrientation.Right, RebarHookOrientation.Right);
 
-            R1.SetSolidInView(view3D, true);
-            R1.SetUnobscuredInView(view3D, true);
-            R2.SetSolidInView(view3D, true);
-            R2.SetUnobscuredInView(view3D, true);
-            R3.SetSolidInView(view3D, true);
-            R3.SetUnobscuredInView(view3D, true);
-            R4.SetSolidInView(view3D, true);
-            R4.SetUnobscuredInView(view3D, true);
-            R3_2.SetSolidInView(view3D, true);
-            R3_2.SetUnobscuredInView(view3D, true);
-            R4_2.SetSolidInView(view3D, true);
-            R4_2.SetUnobscuredInView(view3D, true);
-            R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R4_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R1.SetSolidInView(view3D, true);
+            //R1.SetUnobscuredInView(view3D, true);
+            //R2.SetSolidInView(view3D, true);
+            //R2.SetUnobscuredInView(view3D, true);
+            //R3.SetSolidInView(view3D, true);
+            //R3.SetUnobscuredInView(view3D, true);
+            //R4.SetSolidInView(view3D, true);
+            //R4.SetUnobscuredInView(view3D, true);
+            //R3_2.SetSolidInView(view3D, true);
+            //R3_2.SetUnobscuredInView(view3D, true);
+            //R4_2.SetSolidInView(view3D, true);
+            //R4_2.SetUnobscuredInView(view3D, true);
+            //R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R4_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { R1, R2, R3, R4, R3_2, R4_2 };
+            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -598,15 +610,19 @@ namespace SinoTunnel
                 RebarHookOrientation.Right, RebarHookOrientation.Right);
 
 
-            re.SetSolidInView(view3D, true);
-            re.SetUnobscuredInView(view3D, true);
-            re2.SetSolidInView(view3D, true);
-            re2.SetUnobscuredInView(view3D, true);
-            re3.SetSolidInView(view3D, true);
-            re3.SetUnobscuredInView(view3D, true);
-            re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re.SetSolidInView(view3D, true);
+            //re.SetUnobscuredInView(view3D, true);
+            //re2.SetSolidInView(view3D, true);
+            //re2.SetUnobscuredInView(view3D, true);
+            //re3.SetSolidInView(view3D, true);
+            //re3.SetUnobscuredInView(view3D, true);
+            //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { re, re2, re3 };
+            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -746,30 +762,34 @@ namespace SinoTunnel
             Rebar R6 = Rebar.CreateFromCurvesAndShape(doc, M_S5, barType13M, null, null, ele,
                 plane.Normal, L6, RebarHookOrientation.Right, RebarHookOrientation.Right);
 
-            R1.SetSolidInView(view3D, true);
-            R1.SetUnobscuredInView(view3D, true);
-            R2.SetSolidInView(view3D, true);
-            R2.SetUnobscuredInView(view3D, true);
-            R3.SetSolidInView(view3D, true);
-            R3.SetUnobscuredInView(view3D, true);
-            R4.SetSolidInView(view3D, true);
-            R4.SetUnobscuredInView(view3D, true);
-            R3_2.SetSolidInView(view3D, true);
-            R3_2.SetUnobscuredInView(view3D, true);
-            R4_2.SetSolidInView(view3D, true);
-            R4_2.SetUnobscuredInView(view3D, true);
-            R5.SetSolidInView(view3D, true);
-            R5.SetUnobscuredInView(view3D, true);
-            R6.SetSolidInView(view3D, true);
-            R6.SetUnobscuredInView(view3D, true);
-            R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R5.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R6.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R4_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R1.SetSolidInView(view3D, true);
+            //R1.SetUnobscuredInView(view3D, true);
+            //R2.SetSolidInView(view3D, true);
+            //R2.SetUnobscuredInView(view3D, true);
+            //R3.SetSolidInView(view3D, true);
+            //R3.SetUnobscuredInView(view3D, true);
+            //R4.SetSolidInView(view3D, true);
+            //R4.SetUnobscuredInView(view3D, true);
+            //R3_2.SetSolidInView(view3D, true);
+            //R3_2.SetUnobscuredInView(view3D, true);
+            //R4_2.SetSolidInView(view3D, true);
+            //R4_2.SetUnobscuredInView(view3D, true);
+            //R5.SetSolidInView(view3D, true);
+            //R5.SetUnobscuredInView(view3D, true);
+            //R6.SetSolidInView(view3D, true);
+            //R6.SetUnobscuredInView(view3D, true);
+            //R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R5.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R6.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R4_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { R1, R2, R3, R4, R5, R6, R3_2, R4_2 };
+            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -898,24 +918,28 @@ namespace SinoTunnel
             Rebar re6 = Rebar.CreateFromCurvesAndShape(
                 doc, M_00, barType13M, null, null, ele, plane.Normal, curves_r2, RebarHookOrientation.Left, RebarHookOrientation.Left);
 
-            re.SetSolidInView(view3D, true);
-            re.SetUnobscuredInView(view3D, true);
-            re2.SetSolidInView(view3D, true);
-            re2.SetUnobscuredInView(view3D, true);
-            re3.SetSolidInView(view3D, true);
-            re3.SetUnobscuredInView(view3D, true);
-            re4.SetSolidInView(view3D, true);
-            re4.SetUnobscuredInView(view3D, true);
-            re5.SetSolidInView(view3D, true);
-            re5.SetUnobscuredInView(view3D, true);
-            re6.SetSolidInView(view3D, true);
-            re6.SetUnobscuredInView(view3D, true);
-            re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re5.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            re6.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re.SetSolidInView(view3D, true);
+            //re.SetUnobscuredInView(view3D, true);
+            //re2.SetSolidInView(view3D, true);
+            //re2.SetUnobscuredInView(view3D, true);
+            //re3.SetSolidInView(view3D, true);
+            //re3.SetUnobscuredInView(view3D, true);
+            //re4.SetSolidInView(view3D, true);
+            //re4.SetUnobscuredInView(view3D, true);
+            //re5.SetSolidInView(view3D, true);
+            //re5.SetUnobscuredInView(view3D, true);
+            //re6.SetSolidInView(view3D, true);
+            //re6.SetUnobscuredInView(view3D, true);
+            //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re5.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //re6.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { re, re2, re3, re4, re5, re6 };
+            foreach(Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -1037,27 +1061,31 @@ namespace SinoTunnel
             Rebar R4a = Rebar.CreateFromCurvesAndShape(doc, M_03, barType16M, null, null, ele, plane.Normal, L4
                 , RebarHookOrientation.Right, RebarHookOrientation.Right);
 
-            R1.SetSolidInView(view3D, true);
-            R1.SetUnobscuredInView(view3D, true);
-            R2.SetSolidInView(view3D, true);
-            R2.SetUnobscuredInView(view3D, true);
-            R2a.SetSolidInView(view3D, true);
-            R2a.SetUnobscuredInView(view3D, true);
-            R3.SetSolidInView(view3D, true);
-            R3.SetUnobscuredInView(view3D, true);
-            R4.SetSolidInView(view3D, true);
-            R4.SetUnobscuredInView(view3D, true);
-            R3a.SetSolidInView(view3D, true);
-            R3a.SetUnobscuredInView(view3D, true);
-            R4a.SetSolidInView(view3D, true);
-            R4a.SetUnobscuredInView(view3D, true);
-            R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R2a.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3a.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R4a.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R1.SetSolidInView(view3D, true);
+            //R1.SetUnobscuredInView(view3D, true);
+            //R2.SetSolidInView(view3D, true);
+            //R2.SetUnobscuredInView(view3D, true);
+            //R2a.SetSolidInView(view3D, true);
+            //R2a.SetUnobscuredInView(view3D, true);
+            //R3.SetSolidInView(view3D, true);
+            //R3.SetUnobscuredInView(view3D, true);
+            //R4.SetSolidInView(view3D, true);
+            //R4.SetUnobscuredInView(view3D, true);
+            //R3a.SetSolidInView(view3D, true);
+            //R3a.SetUnobscuredInView(view3D, true);
+            //R4a.SetSolidInView(view3D, true);
+            //R4a.SetUnobscuredInView(view3D, true);
+            //R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R2a.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3a.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R4a.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { R1, R2, R2a, R3, R3a, R4, R4a };
+            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -1169,21 +1197,25 @@ namespace SinoTunnel
             Rebar R4 = Rebar.CreateFromCurvesAndShape(doc, M_03, barType16M, null, null, ele, plane.Normal, L4
                 , RebarHookOrientation.Right, RebarHookOrientation.Right);
 
-            R1.SetSolidInView(view3D, true);
-            R1.SetUnobscuredInView(view3D, true);
-            R3.SetSolidInView(view3D, true);
-            R3.SetUnobscuredInView(view3D, true);
-            R3_2.SetSolidInView(view3D, true);
-            R3_2.SetUnobscuredInView(view3D, true);
-            R3_3.SetSolidInView(view3D, true);
-            R3_3.SetUnobscuredInView(view3D, true);
-            R4.SetSolidInView(view3D, true);
-            R4.SetUnobscuredInView(view3D, true);
-            R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R3_3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
-            R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R1.SetSolidInView(view3D, true);
+            //R1.SetUnobscuredInView(view3D, true);
+            //R3.SetSolidInView(view3D, true);
+            //R3.SetUnobscuredInView(view3D, true);
+            //R3_2.SetSolidInView(view3D, true);
+            //R3_2.SetUnobscuredInView(view3D, true);
+            //R3_3.SetSolidInView(view3D, true);
+            //R3_3.SetUnobscuredInView(view3D, true);
+            //R4.SetSolidInView(view3D, true);
+            //R4.SetUnobscuredInView(view3D, true);
+            //R1.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3_2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R3_3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+            //R4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(ABK);
+
+            // 培文改：設置鋼筋
+            List<Rebar> rebars = new List<Rebar>() { R1, R3, R3_2, R3_3, R4 };
+            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -1204,6 +1236,13 @@ namespace SinoTunnel
                 ElementTransformUtils.RotateElement(doc, R3_2.Id, toward, (-steel_rad + 90.0) / radius);
             }
             ElementTransformUtils.RotateElements(doc, id, toward, seg_angle + dis / radius);//Math.PI / 2.0 +
+        }
+        // 設置鋼筋
+        private void SetRebar(Rebar re, View3D view3D, string value)
+        {
+            //re.SetSolidInView(view3D, true); // 2020
+            re.SetUnobscuredInView(view3D, true);
+            re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(value);
         }
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {

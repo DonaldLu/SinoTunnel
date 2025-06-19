@@ -77,7 +77,10 @@ namespace SinoTunnel
                         RebarBarType barType = (i % 2 == 0) ? barType29M : barType25M;
                         IList<Curve> curves = new List<Curve>();
                         //A2, A2a
-                        double Rebar_r = (k == 0) ? (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2) : (outer_radius - (barType13M.BarDiameter + barType.BarDiameter) / 2);
+                        //double barDiameter = barType13M.BarDiameter + barType.BarDiameter; // 2020
+                        double barDiameter = barType13M.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble() + barType.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble();
+                        double Rebar_r = (k == 0) ? (inner_radius + (barDiameter) / 2) : (outer_radius - (barDiameter) / 2); // 培文改
+                        //double Rebar_r = (k == 0) ? (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2) : (outer_radius - (barType13M.BarDiameter + barType.BarDiameter) / 2); // 台大
                         Curve c = Arc.Create(plane, Rebar_r, ((-36.0 - 72.0 * j) / 180) * Math.PI + side_protect / radius, ((36.0 - 72.0 * j) / 180) * Math.PI - side_protect / radius);
                         curves.Add(c);
 
@@ -86,9 +89,12 @@ namespace SinoTunnel
 
                         XYZ norm = rf.data_list_tunnel[1].start_point - rf.data_list_tunnel[0].start_point;
                         Rebar re = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                        re.SetSolidInView(view3D as View3D, true);
-                        re.SetUnobscuredInView(view3D, true);
-                        re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+                        //re.SetSolidInView(view3D as View3D, true);
+                        //re.SetUnobscuredInView(view3D, true);
+                        //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+
+                        SetRebar(re, view3D, "A");
+
                         subt.Commit();
 
                     }
@@ -106,7 +112,10 @@ namespace SinoTunnel
                     IList<Curve> curves = new List<Curve>();
                     IList<Curve> curves2 = new List<Curve>();
                     //B2, B2a
-                    double Rebar_r = (k == 0) ? (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2) : (outer_radius - (barType13M.BarDiameter + barType.BarDiameter) / 2);
+                    //double barDiameter = barType13M.BarDiameter + barType.BarDiameter; // 2020
+                    double barDiameter = barType13M.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble() + barType.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble();
+                    double Rebar_r = (k == 0) ? (inner_radius + (barDiameter) / 2) : (outer_radius - (barDiameter) / 2); // 培文改
+                    //double Rebar_r = (k == 0) ? (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2) : (outer_radius - (barType13M.BarDiameter + barType.BarDiameter) / 2); // 台大
 
                     Curve c = Arc.Create(plane, Rebar_r, ((36.0) / 180) * Math.PI + side_protect / radius, ((36.0 + 64.5) / 180) * Math.PI - (side_protect - (100.0) * (dis_B / 1000.0)) / radius);
                     Curve c2 = Arc.Create(plane, Rebar_r, ((180.0 - 64.5) / 180) * Math.PI + (side_protect - (100.0) * (dis_B / 1000.0)) / radius, ((180.0) / 180) * Math.PI - side_protect / radius);
@@ -120,12 +129,17 @@ namespace SinoTunnel
                     Rebar re = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
                     Rebar re2 = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves2, RebarHookOrientation.Left, RebarHookOrientation.Left);
 
-                    re.SetSolidInView(view3D as View3D, true);
-                    re.SetUnobscuredInView(view3D, true);
-                    re2.SetSolidInView(view3D as View3D, true);
-                    re2.SetUnobscuredInView(view3D, true);
-                    re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
-                    re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                    //re.SetSolidInView(view3D as View3D, true);
+                    //re.SetUnobscuredInView(view3D, true);
+                    //re2.SetSolidInView(view3D as View3D, true);
+                    //re2.SetUnobscuredInView(view3D, true);
+                    //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                    //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+
+                    // 培文改：設置鋼筋
+                    List<Rebar> rebars = new List<Rebar>() { re, re2 };
+                    foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "B"); }
+
                     subt.Commit();
 
                 }
@@ -140,7 +154,10 @@ namespace SinoTunnel
                     RebarBarType barType = (i % 2 == 0) ? barType29M : barType25M;
                     IList<Curve> curves = new List<Curve>();
                     //K2, K2a
-                    double Rebar_r = (k == 0) ? (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2) : (outer_radius - (barType13M.BarDiameter + barType.BarDiameter) / 2);
+                    //double barDiameter = barType13M.BarDiameter + barType.BarDiameter; // 2020
+                    double barDiameter = barType13M.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble() + barType.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble();
+                    double Rebar_r = (k == 0) ? (inner_radius + (barDiameter) / 2) : (outer_radius - (barDiameter) / 2); // 培文改
+                    //double Rebar_r = (k == 0) ? (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2) : (outer_radius - (barType13M.BarDiameter + barType.BarDiameter) / 2); // 台大
                     Curve c = Arc.Create(plane, Rebar_r, (((36.0 + 64.5) / 180) * Math.PI + (side_protect + (100.0) * (dis_K / 1000.0)) / radius)
                         , ((180.0 - 64.5) / 180) * Math.PI - (side_protect + (100.0) * (dis_K / 1000.0)) / radius);
                     curves.Add(c);
@@ -150,9 +167,13 @@ namespace SinoTunnel
 
                     XYZ norm = rf.data_list_tunnel[1].start_point - rf.data_list_tunnel[0].start_point;
                     Rebar re = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                    re.SetSolidInView(view3D as View3D, true);
-                    re.SetUnobscuredInView(view3D, true);
-                    re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
+                    //re.SetSolidInView(view3D as View3D, true);
+                    //re.SetUnobscuredInView(view3D, true);
+                    //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
+
+                    // 培文改：設置鋼筋
+                    List<Rebar> rebars = new List<Rebar>() { re };
+                    foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "K"); }
 
                     subt.Commit();
                 }
@@ -178,12 +199,22 @@ namespace SinoTunnel
                     IList<Curve> curves2 = new List<Curve>();
                     //A2, A2a
                     double rad_inner_r = inner_radius * 304.8;
-                    Curve c = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2)
+                    // 培文改
+                    //double barDiameter = barType13M.BarDiameter + barType.BarDiameter; // 2020
+                    double barDiameter = barType13M.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble() + barType.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble();
+                    Curve c = Arc.Create(plane, (inner_radius + (barDiameter) / 2)
                         , ((-36.0 - 72.0 * j) / 180) * Math.PI + side_protect / rad_inner_r,
                          ((-36.0 - 72.0 * j) / 180) * Math.PI - (side_protect - 1056) / rad_inner_r);
-                    Curve c2 = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2),
+                    Curve c2 = Arc.Create(plane, (inner_radius + (barDiameter) / 2),
                         ((36.0 - 72.0 * j) / 180) * Math.PI + (side_protect - 1056) / rad_inner_r,
                         ((36.0 - 72.0 * j) / 180) * Math.PI - side_protect / rad_inner_r);
+                    //// 台大
+                    //Curve c = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2)
+                    //    , ((-36.0 - 72.0 * j) / 180) * Math.PI + side_protect / rad_inner_r,
+                    //     ((-36.0 - 72.0 * j) / 180) * Math.PI - (side_protect - 1056) / rad_inner_r);
+                    //Curve c2 = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2),
+                    //    ((36.0 - 72.0 * j) / 180) * Math.PI + (side_protect - 1056) / rad_inner_r,
+                    //    ((36.0 - 72.0 * j) / 180) * Math.PI - side_protect / rad_inner_r);
                     curves.Add(c);
                     curves2.Add(c2);
 
@@ -193,12 +224,16 @@ namespace SinoTunnel
                     XYZ norm = rf.data_list_tunnel[1].start_point - rf.data_list_tunnel[0].start_point;
                     Rebar re = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
                     Rebar re2 = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves2, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                    re.SetSolidInView(view3D as View3D, true);
-                    re.SetUnobscuredInView(view3D, true);
-                    re2.SetSolidInView(view3D as View3D, true);
-                    re2.SetUnobscuredInView(view3D, true);
-                    re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
-                    re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+                    //re.SetSolidInView(view3D as View3D, true);
+                    //re.SetUnobscuredInView(view3D, true);
+                    //re2.SetSolidInView(view3D as View3D, true);
+                    //re2.SetUnobscuredInView(view3D, true);
+                    //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+                    //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+
+                    // 培文改：設置鋼筋
+                    List<Rebar> rebars = new List<Rebar>() { re, re2 };
+                    foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "A"); }
 
                     subt.Commit();
                 }
@@ -233,12 +268,16 @@ namespace SinoTunnel
 
                     Rebar re = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
                     Rebar re2 = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                    re.SetSolidInView(view3D as View3D, true);
-                    re.SetUnobscuredInView(view3D, true);
-                    re2.SetSolidInView(view3D as View3D, true);
-                    re2.SetUnobscuredInView(view3D, true);
-                    re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
-                    re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+                    //re.SetSolidInView(view3D as View3D, true);
+                    //re.SetUnobscuredInView(view3D, true);
+                    //re2.SetSolidInView(view3D as View3D, true);
+                    //re2.SetUnobscuredInView(view3D, true);
+                    //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+                    //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+
+                    // 培文改：設置鋼筋
+                    List<Rebar> rebars = new List<Rebar>() { re, re2 };
+                    foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "A"); }
 
                     double rad_inner_r = inner_radius * 304.8;
                     ElementTransformUtils.RotateElement(doc, re.Id, toward, Math.PI / 2.0 + dis_A / rad_inner_r + 72.0 * j * Math.PI / 180.0); //+72.0 * j + dis_A / radius
@@ -268,12 +307,16 @@ namespace SinoTunnel
 
                 Rebar re = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
                 Rebar re2 = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                re.SetSolidInView(view3D as View3D, true);
-                re.SetUnobscuredInView(view3D, true);
-                re2.SetSolidInView(view3D as View3D, true);
-                re2.SetUnobscuredInView(view3D, true);
-                re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
-                re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+                //re.SetSolidInView(view3D as View3D, true);
+                //re.SetUnobscuredInView(view3D, true);
+                //re2.SetSolidInView(view3D as View3D, true);
+                //re2.SetUnobscuredInView(view3D, true);
+                //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+                //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("A");
+
+                // 培文改：設置鋼筋
+                List<Rebar> rebars = new List<Rebar>() { re, re2 };
+                foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "A"); }
 
                 double rad_outer_r = outer_radius * 304.8;
                 ElementTransformUtils.RotateElement(doc, re.Id, toward, Math.PI / 2.0 + dis_A / rad_outer_r + 72.0 * j * Math.PI / 180.0); //+72.0 * j + dis_A / radius
@@ -302,13 +345,24 @@ namespace SinoTunnel
                 IList<Curve> curves4 = new List<Curve>();
                 //A2, A2a
                 double rad_inner_r = inner_radius * 304.8;
-                Curve c = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2),
+                // 培文改
+                //double barDiameter = barType13M.BarDiameter + barType.BarDiameter; // 2020
+                double barDiameter = barType13M.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble() + barType.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble();
+                Curve c = Arc.Create(plane, (inner_radius + (barDiameter) / 2),
                     (180 / 180) * Math.PI - (side_protect + 1060.1) / rad_inner_r,
                                                      (180 / 180) * Math.PI - side_protect / rad_inner_r);
                 int index = (i == 0) ? 1 : -1;
-                Curve c2 = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2),
+                Curve c2 = Arc.Create(plane, (inner_radius + (barDiameter) / 2),
                     (115.5 / 180) * Math.PI + (side_protect + 2.5 * index) / rad_inner_r,
                                                     (115.5 / 180) * Math.PI + (side_protect + 2.5 * index + 1060.1) / rad_inner_r);
+                //// 台大
+                //Curve c = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2),
+                //    (180 / 180) * Math.PI - (side_protect + 1060.1) / rad_inner_r,
+                //                                     (180 / 180) * Math.PI - side_protect / rad_inner_r);
+                //int index = (i == 0) ? 1 : -1;
+                //Curve c2 = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2),
+                //    (115.5 / 180) * Math.PI + (side_protect + 2.5 * index) / rad_inner_r,
+                //                                    (115.5 / 180) * Math.PI + (side_protect + 2.5 * index + 1060.1) / rad_inner_r);
                 Curve c3 = Arc.Create(plane, inner_radius, (100.5 / 180) * Math.PI - (side_protect + 2.5 * index + 1060.1) / rad_inner_r,
                                                     (100.5 / 180) * Math.PI - (side_protect + 2.5 * index) / rad_inner_r);
 
@@ -326,18 +380,22 @@ namespace SinoTunnel
                 Rebar re2 = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves2, RebarHookOrientation.Left, RebarHookOrientation.Left);
                 Rebar re3 = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves3, RebarHookOrientation.Left, RebarHookOrientation.Left);
                 Rebar re4 = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves4, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                re.SetSolidInView(view3D as View3D, true);
-                re.SetUnobscuredInView(view3D, true);
-                re2.SetSolidInView(view3D as View3D, true);
-                re2.SetUnobscuredInView(view3D, true);
-                re3.SetSolidInView(view3D as View3D, true);
-                re3.SetUnobscuredInView(view3D, true);
-                re4.SetSolidInView(view3D as View3D, true);
-                re4.SetUnobscuredInView(view3D, true);
-                re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
-                re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
-                re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
-                re4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                //re.SetSolidInView(view3D as View3D, true);
+                //re.SetUnobscuredInView(view3D, true);
+                //re2.SetSolidInView(view3D as View3D, true);
+                //re2.SetUnobscuredInView(view3D, true);
+                //re3.SetSolidInView(view3D as View3D, true);
+                //re3.SetUnobscuredInView(view3D, true);
+                //re4.SetSolidInView(view3D as View3D, true);
+                //re4.SetUnobscuredInView(view3D, true);
+                //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                //re3.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                //re4.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+
+                // 培文改：設置鋼筋
+                List<Rebar> rebars = new List<Rebar>() { re, re2, re3, re4 };
+                foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "B"); }
 
                 subt.Commit();
             }
@@ -366,9 +424,13 @@ namespace SinoTunnel
                     RebarShape barshape = M_00;
 
                     Rebar re = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                    re.SetSolidInView(view3D as View3D, true);
-                    re.SetUnobscuredInView(view3D, true);
-                    re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                    //re.SetSolidInView(view3D as View3D, true);
+                    //re.SetUnobscuredInView(view3D, true);
+                    //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+
+                    // 培文改：設置鋼筋
+                    List<Rebar> rebars = new List<Rebar>() { re };
+                    foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "B"); }
 
                     double rad_inner_r = inner_radius * 304.8;
                     int index = (j == 0) ? 1 : -1;
@@ -404,9 +466,13 @@ namespace SinoTunnel
                     RebarShape barshape = M_00;
 
                     Rebar re = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                    re.SetSolidInView(view3D as View3D, true);
-                    re.SetUnobscuredInView(view3D, true);
-                    re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                    //re.SetSolidInView(view3D as View3D, true);
+                    //re.SetUnobscuredInView(view3D, true);
+                    //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+
+                    // 培文改：設置鋼筋
+                    List<Rebar> rebars = new List<Rebar>() { re };
+                    foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "B"); }
 
                     double rad_inner_r = inner_radius * 304.8;
                     int index = (j == 0) ? 1 : -1;
@@ -436,12 +502,16 @@ namespace SinoTunnel
 
                 Rebar re = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
                 Rebar re2 = Rebar.CreateFromCurvesAndShape(doc, barshape, barType, null, null, element, plane.Normal, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                re.SetSolidInView(view3D as View3D, true);
-                re.SetUnobscuredInView(view3D, true);
-                re2.SetSolidInView(view3D as View3D, true);
-                re2.SetUnobscuredInView(view3D, true);
-                re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
-                re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                //re.SetSolidInView(view3D as View3D, true);
+                //re.SetUnobscuredInView(view3D, true);
+                //re2.SetSolidInView(view3D as View3D, true);
+                //re2.SetUnobscuredInView(view3D, true);
+                //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+                //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("B");
+
+                // 培文改：設置鋼筋
+                List<Rebar> rebars = new List<Rebar>() { re, re2 };
+                foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "B"); }
 
                 double rad_outer_r = outer_radius * 304.8;
                 int index = (j == 0) ? 1 : -1;
@@ -467,18 +537,29 @@ namespace SinoTunnel
                 double rad_inner_r = inner_radius * 304.8;
 
                 int index = (i == 0) ? 1 : -1;
-                Curve c = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2)
+                // 培文改
+                //double barDiameter = barType13M.BarDiameter + barType.BarDiameter; // 2020
+                double barDiameter = barType13M.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble() + barType.get_Parameter(BuiltInParameter.REBAR_BAR_DIAMETER).AsDouble();
+                Curve c = Arc.Create(plane, (inner_radius + (barDiameter) / 2)
                     , (100.5 / 180) * Math.PI + (side_protect + dis_K / 10.0) / rad_inner_r
                     , (115.5 / 180) * Math.PI - (side_protect + dis_K / 10.0) / rad_inner_r);//+ (side_protect + 2.5 * index) / rad_inner_r
+                //// 台大
+                //Curve c = Arc.Create(plane, (inner_radius + (barType13M.BarDiameter + barType.BarDiameter) / 2)
+                //    , (100.5 / 180) * Math.PI + (side_protect + dis_K / 10.0) / rad_inner_r
+                //    , (115.5 / 180) * Math.PI - (side_protect + dis_K / 10.0) / rad_inner_r);//+ (side_protect + 2.5 * index) / rad_inner_r
                 curves.Add(c);
                 subt.Start();
 
 
                 XYZ norm = rf.data_list_tunnel[1].start_point - rf.data_list_tunnel[0].start_point;
                 Rebar re = Rebar.CreateFromCurvesAndShape(doc, shape, barType, null, null, element, norm, curves, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                re.SetSolidInView(view3D as View3D, true);
-                re.SetUnobscuredInView(view3D, true);
-                re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
+                //re.SetSolidInView(view3D as View3D, true);
+                //re.SetUnobscuredInView(view3D, true);
+                //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
+
+                // 培文改：設置鋼筋
+                List<Rebar> rebars = new List<Rebar>() { re };
+                foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "K"); }
 
                 subt.Commit();
             }
@@ -513,12 +594,16 @@ namespace SinoTunnel
                 Rebar re2 = Rebar.CreateFromCurvesAndShape(
                     doc, barshape, barType, null, null, element, plane.Normal
                     , curves2, RebarHookOrientation.Left, RebarHookOrientation.Left);
-                re.SetSolidInView(view3D as View3D, true);
-                re.SetUnobscuredInView(view3D, true);
-                re2.SetSolidInView(view3D as View3D, true);
-                re2.SetUnobscuredInView(view3D, true);
-                re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
-                re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
+                //re.SetSolidInView(view3D as View3D, true);
+                //re.SetUnobscuredInView(view3D, true);
+                //re2.SetSolidInView(view3D as View3D, true);
+                //re2.SetUnobscuredInView(view3D, true);
+                //re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
+                //re2.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set("K");
+
+                // 培文改：設置鋼筋
+                List<Rebar> rebars = new List<Rebar>() { re, re2 };
+                foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, "K"); }
 
                 double rad_inner_r = inner_radius * 304.8;
                 int index = (j == 0) ? 1 : -1;
@@ -528,6 +613,13 @@ namespace SinoTunnel
             }
 
             t.Commit();
+        }
+        // 設置鋼筋
+        private void SetRebar(Rebar re, View3D view3D, string value)
+        {
+            //re.SetSolidInView(view3D as View3D, true); // 2020
+            re.SetUnobscuredInView(view3D, true);
+            re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(value);
         }
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {

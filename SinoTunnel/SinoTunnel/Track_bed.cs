@@ -11,6 +11,7 @@ using Autodesk.Revit.DB.Structure;
 using DataObject;
 using System.Numerics;
 using Plane = Autodesk.Revit.DB.Plane;
+using System.Windows;
 
 namespace SinoTunnel
 {
@@ -470,9 +471,14 @@ namespace SinoTunnel
                             FamilyInstance every_support = ori_doc.Create.NewFamilyInstance(put_point, support_symbol, StructuralType.NonStructural);
 
                             double toward_slope = toward.Direction.Y / toward.Direction.X; // 台大
-                            //double toward_slope = Math.Abs(toward.Direction.Y / toward.Direction.X); // 培文改：Math.Abs
                             Line rotate_axis = Line.CreateBound(put_point, put_point + XYZ.BasisZ);
-                            ElementTransformUtils.RotateElement(ori_doc, every_support.Id, rotate_axis, Math.Atan(toward_slope) + Math.PI / 2);
+                            //ElementTransformUtils.RotateElement(ori_doc, every_support.Id, rotate_axis, Math.Atan(toward_slope) + Math.PI / 2);
+
+                            // 培文改
+                            XYZ start = data_list[b].start_point;
+                            XYZ end = data_list[b + 1].start_point;
+                            double radians = (Math.Atan2((end.Y - start.Y), (end.X - start.X)) * 180.0 / Math.PI) * (Math.PI / 180); // 弧度
+                            ElementTransformUtils.RotateElement(ori_doc, every_support.Id, rotate_axis, radians + Math.PI / 2);
 
                             ori_sub_t.Commit();
                             ori_sub_t.Start();
@@ -486,18 +492,27 @@ namespace SinoTunnel
                                 int start_st = int.Parse(setting_Station.third_rail_station[k][1]);
                                 int end_st = int.Parse(setting_Station.third_rail_station[k][2]);
 
-                                if (for_check_station >= start_st && for_check_station < end_st)
-                                {
+                                //if (for_check_station >= start_st && for_check_station < end_st)
+                                //{
                                     if (setting_Station.third_rail_station[k][0] == "右側") { isRight = true; }
                                     else { isRight = false; }
-                                }
+                                //}
                             }
-                            // 培文改
-                            if (isRight == false) { every_support.Location.Rotate(rotate_axis, Math.PI); }
-                            every_support.Location.Rotate(toward, -Math.PI * angle / 180.0);
-                            //int leftOrRight = LeftOrRight(data_list[b].start_point, data_list[b + 1].start_point, put_point);
-                            //if (isRight == true && leftOrRight == 1) { every_support.Location.Rotate(rotate_axis, Math.PI); }
 
+                            // 培文改
+                            //double offset = UnitUtils.ConvertToInternalUnits(tb_properties.third_steel_between_dis, DisplayUnitType.DUT_MILLIMETERS); // 2020
+                            double offset = UnitUtils.ConvertToInternalUnits(tb_properties.third_steel_between_dis, UnitTypeId.Millimeters); // 2024
+                            XYZ normal = XYZ.BasisZ.CrossProduct((end - start).Normalize()); // 垂直的向量
+                            Vector vector = new Vector(normal.X, normal.Y); // 方向向量
+                            vector = GetVectorOffset(vector, offset);
+                            XYZ centerXYZ = new XYZ((start.X + end.X) / 2, (start.Y + end.Y) / 2, (start.Z + end.Z) / 2);
+                            XYZ offsetPoint = new XYZ(centerXYZ.X + vector.X, centerXYZ.Y + vector.Y, centerXYZ.Z);
+                            string side = GetPointSideOnPlane(data_list[b].start_point, data_list[b + 1].start_point, offsetPoint, XYZ.BasisZ);
+                            if (isRight == true && side.Equals("左側")) { every_support.Location.Rotate(rotate_axis, Math.PI); }
+                            else if (isRight == false && side.Equals("右側")) { every_support.Location.Rotate(rotate_axis, Math.PI); }
+                            every_support.Location.Rotate(toward, -Math.PI * angle / 180.0);
+                            //DrawLine(ori_doc, toward);
+                            //DrawLine(ori_doc, Line.CreateBound(centerXYZ, offsetPoint));
 
 
                             //if (isRight == true) { every_support.Location.Rotate(toward, Math.PI * angle / 180.0); }
@@ -527,35 +542,37 @@ namespace SinoTunnel
             }
             catch (Exception e) { TaskDialog.Show("error", e.StackTrace + e.Message); }
         }
-        // 透過叉積計算座標點在線段的左側或右側, 0：中間、1：左邊、2：右邊
-        private int LeftOrRight(XYZ start, XYZ end, XYZ put_point)
+        /// <summary>
+        /// 辨識放置點在線段的左側或右側
+        /// </summary>
+        /// <param name="A"></param>
+        /// <param name="B"></param>
+        /// <param name="P"></param>
+        /// <param name="planeNormal"></param>
+        /// <returns></returns>
+        public string GetPointSideOnPlane(XYZ A, XYZ B, XYZ P, XYZ planeNormal)
         {
-            int leftOrRight = 0;
-            // 定義法線向量 N
-            float startX = (float)(start.X - end.X);
-            float startY = (float)(start.Y - end.Y);
-            Vector2 normal = new Vector2(startX, startY); // 法線向量
+            XYZ v = B - A;
+            XYZ w = P - A;
 
-            // 定義參考點 P
-            float centerX = (float)(start.X + end.X) / 2;
-            float centerY = (float)(start.Y + end.Y) / 2;
-            Vector2 P = new Vector2(centerX, centerY); // 假設參考點是 (0, 0)
+            XYZ cross = v.CrossProduct(w);
+            double dot = cross.DotProduct(planeNormal);
 
-            // 定義待測點 Q
-            Vector2 Q = new Vector2((float)put_point.X, (float)put_point.Y); // 假設待測點是 (0, 1)
-
-            // 計算 PQ 向量
-            Vector2 PQ = new Vector2(Q.X - P.X, Q.Y - P.Y); // 計算向量差
-
-            // 計算法線向量與 PQ 向量的叉積
-            double cross = normal.X * PQ.Y - normal.Y * PQ.X; // 計算兩個向量的叉積
-
-            // 根據叉積結果判斷方向
-            if (cross > 0) { leftOrRight = 1; } // 點 Q 在法線的左邊
-            else if (cross < 0) { leftOrRight = 2; } // 點 Q 在法線的右邊
-            else { leftOrRight = 0; } // 點 Q 在法線的同一直線上
-
-            return leftOrRight;
+            if (dot > 1e-9) { return "左側"; }                
+            else if (dot < -1e-9) { return "右側"; }
+            else { return "在線上"; }
+        }
+        /// <summary>
+        /// 取得向量偏移的距離
+        /// </summary>
+        /// <param name="vector"></param>
+        /// <param name="newLength"></param>
+        /// <returns></returns>
+        private Vector GetVectorOffset(Vector vector, double newLength)
+        {
+            double length = Math.Sqrt(vector.X * vector.X + vector.Y * vector.Y); // 計算向量長度
+            if (length != 0) { vector = new Vector(vector.X / length * newLength, vector.Y / length * newLength); }
+            return vector;
         }
 
         public class FailureHandler : IFailuresPreprocessor
@@ -671,7 +688,23 @@ namespace SinoTunnel
             int b = int.Parse(station.Split('+')[1].Split('.')[0]);
             return a * 1000 + b;
         }
-
+        /// <summary>
+        /// 3D視圖中畫模型線
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <param name="curve"></param>
+        private void DrawLine(Document doc, Curve curve)
+        {
+            try
+            {
+                Line line = Line.CreateBound(curve.Tessellate()[0], curve.Tessellate()[curve.Tessellate().Count - 1]);
+                XYZ normal = new XYZ(line.Direction.Z - line.Direction.Y, line.Direction.X - line.Direction.Z, line.Direction.Y - line.Direction.X); // 使用與線不平行的任意向量
+                Plane plane = Plane.CreateByNormalAndOrigin(normal, curve.Tessellate()[0]);
+                SketchPlane sketchPlane = SketchPlane.Create(doc, plane);
+                ModelCurve modelCurve = doc.Create.NewModelCurve(line, sketchPlane);
+            }
+            catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
+        }
         public string GetName()
         {
             return "Event handler is working now!!";
@@ -680,7 +713,6 @@ namespace SinoTunnel
 
     class FamilyOption : IFamilyLoadOptions
     {
-
         bool IFamilyLoadOptions.OnFamilyFound(bool familyInUse, out bool overwriteParameterValues)
         {
             overwriteParameterValues = true;
