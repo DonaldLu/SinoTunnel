@@ -298,7 +298,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { re, re2 };
-            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach (Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -395,7 +395,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { re, re2, re3 };
-            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach (Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -522,7 +522,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { R1, R2, R3, R4, R3_2, R4_2 };
-            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach (Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -622,7 +622,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { re, re2, re3 };
-            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach (Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -789,7 +789,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { R1, R2, R3, R4, R5, R6, R3_2, R4_2 };
-            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach (Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -939,7 +939,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { re, re2, re3, re4, re5, re6 };
-            foreach(Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach(Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(re.Id);
@@ -1085,7 +1085,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { R1, R2, R2a, R3, R3a, R4, R4a };
-            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach (Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -1215,7 +1215,7 @@ namespace SinoTunnel
 
             // 培文改：設置鋼筋
             List<Rebar> rebars = new List<Rebar>() { R1, R3, R3_2, R3_3, R4 };
-            foreach (Rebar rebar in rebars) { SetRebar(rebar, view3D, ABK); }
+            foreach (Rebar rebar in rebars) { SetRebar(doc, rebar, view3D, ABK); }
 
             ICollection<ElementId> id = new List<ElementId>();
             id.Add(R1.Id);
@@ -1238,11 +1238,28 @@ namespace SinoTunnel
             ElementTransformUtils.RotateElements(doc, id, toward, seg_angle + dis / radius);//Math.PI / 2.0 +
         }
         // 設置鋼筋
-        private void SetRebar(Rebar re, View3D view3D, string value)
+        private void SetRebar(Document doc, Rebar re, View3D view3D, string value)
         {
-            //re.SetSolidInView(view3D, true); // 2020
+            //re.SetSolidInView(view3D as View3D, true); // 2020
+
+            // 2024：假設已有 RebarId 和 View view
+            OverrideGraphicSettings ogs = new OverrideGraphicSettings();
+            // 設定為實心顯示(實心填充 + 透明度為0)
+            ogs.SetSurfaceTransparency(0); // 不透明
+            ogs.SetSurfaceForegroundPatternId(GetSolidFillPatternId(doc)); // 實心填充
+            ogs.SetSurfaceForegroundPatternColor(new Color(0, 0, 0)); // 黑色或其他顏色            
+            view3D.SetElementOverrides(re.Id, ogs); // 套用到 View 上的 Rebar 元件
+
             re.SetUnobscuredInView(view3D, true);
             re.get_Parameter(BuiltInParameter.ALL_MODEL_INSTANCE_COMMENTS).Set(value);
+        }
+        ElementId GetSolidFillPatternId(Document doc)
+        {
+            return new FilteredElementCollector(doc)
+                .OfClass(typeof(FillPatternElement))
+                .Cast<FillPatternElement>()
+                .FirstOrDefault(fp => fp.GetFillPattern().IsSolidFill)
+                ?.Id ?? ElementId.InvalidElementId;
         }
         public SketchPlane Sketch_plain(Document doc, XYZ start, XYZ end)
         {

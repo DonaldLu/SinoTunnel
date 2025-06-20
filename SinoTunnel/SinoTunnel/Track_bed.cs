@@ -501,7 +501,8 @@ namespace SinoTunnel
 
                             // 培文改
                             //double offset = UnitUtils.ConvertToInternalUnits(tb_properties.third_steel_between_dis, DisplayUnitType.DUT_MILLIMETERS); // 2020
-                            double offset = UnitUtils.ConvertToInternalUnits(tb_properties.third_steel_between_dis, UnitTypeId.Millimeters); // 2024
+                            //double offset = UnitUtils.ConvertToInternalUnits(tb_properties.third_steel_between_dis, UnitTypeId.Millimeters); // 2024
+                            double offset = tb_properties.third_steel_between_dis / 304.8;
                             XYZ normal = XYZ.BasisZ.CrossProduct((end - start).Normalize()); // 垂直的向量
                             Vector vector = new Vector(normal.X, normal.Y); // 方向向量
                             vector = GetVectorOffset(vector, offset);
