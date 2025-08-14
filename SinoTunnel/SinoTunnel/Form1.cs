@@ -14,6 +14,7 @@ using System.Net.Http;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using System.Net;
+using TaskDialog = Autodesk.Revit.UI.TaskDialog;
 
 namespace SinoTunnel
 {

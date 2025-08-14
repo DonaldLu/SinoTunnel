@@ -41,7 +41,7 @@ namespace SinoTunnel
             foreach (string up_n_dn in new List<string> { "軌道線形 (UP)", "軌道線形 (DN)" })
             {
                 Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets[up_n_dn];
-                Excel.Range xlRange = (Excel.Range)xlWorksheet.UsedRange;
+                Excel.Range xlRange = xlWorksheet.UsedRange;
                 int row_count = xlRange.Rows.Count;
                 for(int r=1; r<=row_count;r++)
                 {
@@ -108,7 +108,7 @@ namespace SinoTunnel
             {
                 Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets[up_n_dn];
                 Excel.Range xlRange = xlWorksheet.UsedRange;
-                Excel.Range row_Range = xlWorksheet.Rows[1];
+                Excel.Range row_Range = (Excel.Range)xlWorksheet.Rows[1];
 
                 foreach (string item in new List<string> { "仰拱", "道床", "排水溝" })
                 {
@@ -152,7 +152,7 @@ namespace SinoTunnel
                 if (GetCell(xlRange, i, 1).Value2.ToString() == "聯絡通道里程_上行")
                 //if (xlRange.Cells[i, 1].Value2.ToString() == "聯絡通道里程_上行")
                 {
-                    Excel.Range row_of_cd_channel = xlRange.Rows[i];
+                    Excel.Range row_of_cd_channel = (Excel.Range)xlRange.Rows[i];
                     for (int j = 2; j <= row_of_cd_channel.Columns.Count ; j++)
                     {
                         if (GetCell(xlRange, i, j) != null && GetCell(xlRange, i, j).Value2 != null)
@@ -191,7 +191,7 @@ namespace SinoTunnel
                     if (GetCell(xlRange, i, 1).Value2.ToString() == "聯絡通道里程_下行")
                     //if (xlRange.Cells[i, 1].Value2.ToString() == "聯絡通道里程_下行")
                     {
-                        Excel.Range row_of_cd_channel = xlRange.Rows[i];
+                        Excel.Range row_of_cd_channel = (Excel.Range)xlRange.Rows[i];
                         for (int j = 2; j <= row_of_cd_channel.Columns.Count; j++)
                         {
                             if (GetCell(xlRange, i, j) != null && GetCell(xlRange, i, j).Value2 != null)
@@ -1527,7 +1527,7 @@ namespace SinoTunnel
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(path + file_name);
             Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets["軌道線形 (DN)"];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            Excel.Range xlRange_partial = xlRange.Columns[2];
+            Excel.Range xlRange_partial = (Excel.Range)xlRange.Columns[2];
 
             Excel.Range start_range = null;
             Excel.Range end_range = null;
@@ -1622,7 +1622,7 @@ namespace SinoTunnel
             Excel.Workbook xlWorkbook = xlApp.Workbooks.Open(path + file_name);
             Excel._Worksheet xlWorksheet = (Excel._Worksheet)xlWorkbook.Sheets["軌道線形 (UP)"];
             Excel.Range xlRange = xlWorksheet.UsedRange;
-            Excel.Range xlRange_partial = xlRange.Columns[2];
+            Excel.Range xlRange_partial = (Excel.Range)xlRange.Columns[2];
 
             Excel.Range start_range = null;
             Excel.Range end_range = null;

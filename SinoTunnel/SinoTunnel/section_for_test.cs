@@ -11,6 +11,7 @@ using Autodesk.Revit.DB.Structure;
 using DataObject;
 using Autodesk.Revit.UI.Selection;
 using System.Windows.Forms;
+using TaskDialog = Autodesk.Revit.UI.TaskDialog;
 
 namespace SinoTunnel
 {
