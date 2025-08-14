@@ -442,7 +442,7 @@ namespace SinoTunnel
                                 //try { ElementTransformUtils.RotateElement(doc, every_foundation.Id, sec_rotate_axis, Math.Acos(Z_angle)); } catch { }
                             }
                         }
-                        catch (Exception e) {  }
+                        catch (Exception) {  }
                     }
 
                     int th_support_dis = int.Parse(tb_properties.third_bracket_spacing.ToString());
@@ -535,7 +535,7 @@ namespace SinoTunnel
                             //    //try { ElementTransformUtils.RotateElement(doc, every_support.Id, sec_rotate_axis, Math.Acos(Z_angle)); } catch { }
                             //}
                         }
-                        catch (Exception e) { ori_sub_t.Commit(); }
+                        catch (Exception) { ori_sub_t.Commit(); }
                     }
                     ori_t.Commit();
                 }

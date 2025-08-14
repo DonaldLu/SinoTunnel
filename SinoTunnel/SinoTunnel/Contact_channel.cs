@@ -165,8 +165,8 @@ namespace SinoTunnel
                     //C.疊式聯絡通道 
                     double landing_length = 5000;
                     double circle_rad = 2000;
-                    double tunnel_top = 130000;
-                    double tunnel_bottom = 90000;
+                    //double tunnel_top = 130000;
+                    //double tunnel_bottom = 90000;
 
 
                     if (module == 0) //建立高差聯絡通道

@@ -153,7 +153,7 @@ namespace SinoTunnel
                                     FamilySymbol new_gutter_profile = gutter_profile.Duplicate(gutter[0] + "_PVC管圓心深度=" + gutter_depth_distinct[i].ToString()) as FamilySymbol;
                                     new_gutter_profile.LookupParameter("PVC管圓心深度").SetValueString(gutter_depth_distinct[i].ToString());
                                 }
-                                catch (Exception e) { }
+                                catch (Exception) { }
                             }
                             for (int i = 0; i < hollow_depth.Count; i++)
                             {
@@ -162,7 +162,7 @@ namespace SinoTunnel
                                     FamilySymbol new_hollow_profile = hollow_profile.Duplicate("PVC管明溝_PVC管圓心深度=" + hollow_depth[i].ToString()) as FamilySymbol;
                                     new_hollow_profile.LookupParameter("深度").SetValueString(hollow_depth[i].ToString());
                                 }
-                                catch (Exception e) { }
+                                catch (Exception) { }
                             }
                             t.Commit();
                             //輪廓製造完畢
