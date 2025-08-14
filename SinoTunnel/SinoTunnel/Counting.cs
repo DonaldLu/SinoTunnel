@@ -1245,10 +1245,12 @@ namespace SinoTunnel
                 Workbook.SaveAs(new_path, Type.Missing, "", "", Type.Missing, Type.Missing, Excel.XlSaveAsAccessMode.xlNoChange, 1, false, Type.Missing, Type.Missing, Type.Missing);
 
                 Excel.Workbook n_Workbook = Eapp.Workbooks.Open(new_path);
-                Excel.Worksheet n_sheet = n_Workbook.Worksheets[1];
+                Excel.Worksheet n_sheet = (Excel.Worksheet)n_Workbook.Worksheets[1];
                 
                 Eapp.DisplayAlerts = false;
-                n_Workbook.Worksheets[2].Delete();
+                Excel.Worksheet n_sheet2 = (Excel.Worksheet)n_Workbook.Worksheets[2];
+                n_sheet2.Delete();
+                //n_Workbook.Worksheets[2].Delete();
                 Eapp.DisplayAlerts = true;
 
                 Excel.Range n_sheet_range = n_sheet.UsedRange;
@@ -1281,11 +1283,15 @@ namespace SinoTunnel
                     {
                         n_sheet.Cells[i, 3] = "m"; n_sheet.Cells[i, 4] = data.sum_miles; n_sheet.Cells[i, 5] = data.sum_miles_cal;
                     }
-                }
-                double.TryParse(n_sheet.Cells[20, 4].Value2.ToString(), out double val);
-                double.TryParse(n_sheet.Cells[19, 4].Value2.ToString(), out double val_tunnel);
+                }                
+                double.TryParse(GetCell(n_sheet, 20, 4).Value2.ToString(), out double val);
+                double.TryParse(GetCell(n_sheet, 19, 4).Value2.ToString(), out double val_tunnel);
                 n_sheet.Cells[19, 4] = val_tunnel - val;
-                n_sheet.Cells[19, 5] = n_sheet.Cells[19, 5].Value2.ToString() + "-" + val.ToString();
+                n_sheet.Cells[19, 5] = GetCell(n_sheet, 19, 5).Value2.ToString() + "-" + val.ToString();
+                //double.TryParse(n_sheet.Cells[20, 4].Value2.ToString(), out double val);
+                //double.TryParse(n_sheet.Cells[19, 4].Value2.ToString(), out double val_tunnel);
+                //n_sheet.Cells[19, 4] = val_tunnel - val;
+                //n_sheet.Cells[19, 5] = n_sheet.Cells[19, 5].Value2.ToString() + "-" + val.ToString();
 
 
                 //隧道襯砌環片，隧道預鑄混凝土襯砌環片資料寫入
@@ -1383,7 +1389,8 @@ namespace SinoTunnel
                 n_sheet.Cells[141, 2] = "標準型道床排水模板"; n_sheet.Cells[141, 3] = "m2"; n_sheet.Cells[141, 4] = gutter_temp; n_sheet.Cells[141, 5] = str_gutter_temp; n_sheet.Cells[141, 7] = "M0311090002";
                 n_sheet.Cells[142, 2] = "標準型道床熱鍍鋅蓋板"; n_sheet.Cells[142, 3] = " "; n_sheet.Cells[142, 4] = 7; n_sheet.Cells[142, 7] = "M055306000A10";
 
-                double.TryParse(n_sheet.Cells[142, 4].Value2.ToString(), out double val_cover);
+                double.TryParse(GetCell(n_sheet, 142, 4).Value2.ToString(), out double val_cover);
+                //double.TryParse(n_sheet.Cells[142, 4].Value2.ToString(), out double val_cover);
                 n_sheet.Cells[140, 4] = 1 / 0.5 * 100 - val_cover;
                 n_sheet.Cells[140, 5] = stn_sidewalk_lid.ToString() + "-" + val_cover.ToString();
 
@@ -1404,6 +1411,17 @@ namespace SinoTunnel
                 TaskDialog.Show("error", e.Message + e.StackTrace);
             }
 
+        }
+        /// <summary>
+        /// 培文改：.NET Core 8.0 需要使用dynamic來取得Excel的Cell值
+        /// </summary>
+        /// <param name="xlSheet"></param>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        private dynamic GetCell(Excel.Worksheet xlSheet, int row, int col)
+        {
+            return xlSheet.Cells[row, col];
         }
 
         public string GetName()

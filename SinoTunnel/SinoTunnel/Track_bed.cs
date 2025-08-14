@@ -12,6 +12,7 @@ using DataObject;
 using System.Numerics;
 using Plane = Autodesk.Revit.DB.Plane;
 using System.Windows;
+using Vector = System.Windows.Vector;
 
 namespace SinoTunnel
 {
