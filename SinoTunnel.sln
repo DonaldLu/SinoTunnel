@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.14.36401.2 d17.14
+VisualStudioVersion = 17.14.36401.2
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SinoTunnel", "SinoTunnel.csproj", "{9955019C-983B-43BD-8B7F-6F15AB96FD9C}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SinoTunnel", "SinoTunnel\SinoTunnel.csproj", "{9955019C-983B-43BD-8B7F-6F15AB96FD9C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SinoTunnel_2025", "..\SinoTunnel_2025\SinoTunnel_2025.csproj", "{925F6C81-990D-42B5-8ADF-CD22DE23616D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SinoTunnel_2025", "SinoTunnel_2025\SinoTunnel_2025.csproj", "{925F6C81-990D-42B5-8ADF-CD22DE23616D}"
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SinoTunnel_Setup", "..\SinoTunnel_Setup\SinoTunnel_Setup.vdproj", "{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SinoTunnel_Setup", "SinoTunnel_Setup\SinoTunnel_Setup.vdproj", "{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,6 +24,7 @@ Global
 		{925F6C81-990D-42B5-8ADF-CD22DE23616D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{925F6C81-990D-42B5-8ADF-CD22DE23616D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}.Debug|Any CPU.ActiveCfg = Debug
+		{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}.Debug|Any CPU.Build.0 = Debug
 		{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}.Release|Any CPU.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
