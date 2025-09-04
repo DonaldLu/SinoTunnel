@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SinoTunnel_2025", "SinoTunn
 EndProject
 Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "SinoTunnel_Setup", "SinoTunnel_Setup\SinoTunnel_Setup.vdproj", "{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SinoTunnel_2020", "SinoTunnel_2020\SinoTunnel_2020.csproj", "{176A773E-D48E-4141-83FD-B0F3ADA995C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,8 +26,11 @@ Global
 		{925F6C81-990D-42B5-8ADF-CD22DE23616D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{925F6C81-990D-42B5-8ADF-CD22DE23616D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}.Debug|Any CPU.ActiveCfg = Debug
-		{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}.Debug|Any CPU.Build.0 = Debug
 		{AE45FEB7-01D6-4D49-8CB8-727AA8248B30}.Release|Any CPU.ActiveCfg = Release
+		{176A773E-D48E-4141-83FD-B0F3ADA995C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{176A773E-D48E-4141-83FD-B0F3ADA995C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{176A773E-D48E-4141-83FD-B0F3ADA995C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{176A773E-D48E-4141-83FD-B0F3ADA995C1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
