@@ -211,20 +211,28 @@ namespace SinoTunnel
 
                         for (int k = (target - r) - 3; k < (target - r) + 4; k++) //excel index has been changed, sketchplane should be modified cuz the slope of tunnel(down)
                         {
-                            Line ho_dn = Line.CreateBound(rf.data_list_tunnel[k].start_point, rf.data_list_tunnel[k + 1].start_point);
-                            SketchPlane sketchPlane_dn = Sketch_Plane(doc, rf.data_list_tunnel[k].start_point, rf.data_list_tunnel[k + 1].start_point);
-                            ModelCurve mho_dn = doc.FamilyCreate.NewModelCurve(ho_dn, sketchPlane_dn);
-                            hollow_dn.Append(mho_dn.GeometryCurve.Reference);
-                            pre_del_list.Add(mho_dn.Id);
+                            try
+                            {
+                                Line ho_dn = Line.CreateBound(rf.data_list_tunnel[k].start_point, rf.data_list_tunnel[k + 1].start_point);
+                                SketchPlane sketchPlane_dn = Sketch_Plane(doc, rf.data_list_tunnel[k].start_point, rf.data_list_tunnel[k + 1].start_point);
+                                ModelCurve mho_dn = doc.FamilyCreate.NewModelCurve(ho_dn, sketchPlane_dn);
+                                hollow_dn.Append(mho_dn.GeometryCurve.Reference);
+                                pre_del_list.Add(mho_dn.Id);
+                            }
+                            catch(Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
                         }
 
                         for (int k2 = (target2 - r2) - 3; k2 < (target2 - r2) + 4; k2++) //excel index has been changed, sketchplane should be modified cuz the slope of tunnel(up)
                         {
-                            Line ho_up = Line.CreateBound(rf.data_list_tunnel2[k2].start_point, rf.data_list_tunnel2[k2 + 1].start_point);
-                            SketchPlane sketchPlane_up = Sketch_Plane(doc, rf.data_list_tunnel2[k2].start_point, rf.data_list_tunnel2[k2 + 1].start_point);
-                            ModelCurve mho_up = doc.FamilyCreate.NewModelCurve(ho_up, sketchPlane_up);
-                            hollow_up.Append(mho_up.GeometryCurve.Reference);
-                            pre_del_list.Add(mho_up.Id);
+                            try
+                            {
+                                Line ho_up = Line.CreateBound(rf.data_list_tunnel2[k2].start_point, rf.data_list_tunnel2[k2 + 1].start_point);
+                                SketchPlane sketchPlane_up = Sketch_Plane(doc, rf.data_list_tunnel2[k2].start_point, rf.data_list_tunnel2[k2 + 1].start_point);
+                                ModelCurve mho_up = doc.FamilyCreate.NewModelCurve(ho_up, sketchPlane_up);
+                                hollow_up.Append(mho_up.GeometryCurve.Reference);
+                                pre_del_list.Add(mho_up.Id);
+                            }
+                            catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
                         }
 
                         //建立空心實體

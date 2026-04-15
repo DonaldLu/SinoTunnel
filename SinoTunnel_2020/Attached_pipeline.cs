@@ -72,79 +72,80 @@ namespace SinoTunnel_2020
                                 // 依照excel資訊建立輪廓
                                 T.Start("建置輪廓");
 
-                                FamilySymbol pipe = new FilteredElementCollector(doc)
-                                                    .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == fafacility["類型"]).First();
-                                FamilySymbol dup_pipe = pipe.Duplicate(fafacility["項目"] + "_" + (pipe_num + 1).ToString() + count.ToString()) as FamilySymbol;
-                                dup_pipe.LookupParameter("項目").SetValueString(fafacility["項目"]);
-                                dup_pipe.LookupParameter("直徑").SetValueString(fafacility["直徑"]);
-                                dup_pipe.LookupParameter("隧道中心點").SetValueString(rf.properties.center_point.ToString());
-                                dup_pipe.LookupParameter("隧道內徑").SetValueString(rf.properties.inner_diameter.ToString());
-
-                                if (fafacility["數量"] != "1")
+                                try
                                 {
-                                    string Y_pos = (double.Parse(fafacility["Y位置"]) + (double.Parse(fafacility["Y範圍"]) * pipe_num / (double.Parse(fafacility["數量"]) - 1))).ToString();
-                                    string X_pos = (double.Parse(fafacility["Y位置"] + rf.properties.center_point) >= rf.properties.inner_diameter / 2)
-                                        ? (double.Parse(fafacility["X位置"]) - double.Parse(fafacility["X範圍"]) * pipe_num / (int.Parse(fafacility["數量"]) - 1)).ToString()
-                                        : (double.Parse(fafacility["X位置"]) + double.Parse(fafacility["X範圍"]) * pipe_num / (int.Parse(fafacility["數量"]) - 1)).ToString();
+                                    FamilySymbol pipe = new FilteredElementCollector(doc)
+                                                        .OfClass(typeof(FamilySymbol)).Cast<FamilySymbol>().ToList().Where(x => x.Name == fafacility["類型"]).First();
+                                    FamilySymbol dup_pipe = pipe.Duplicate(fafacility["項目"] + "_" + (pipe_num + 1).ToString() + count.ToString()) as FamilySymbol;
+                                    dup_pipe.LookupParameter("項目").SetValueString(fafacility["項目"]);
+                                    dup_pipe.LookupParameter("直徑").SetValueString(fafacility["直徑"]);
+                                    dup_pipe.LookupParameter("隧道中心點").SetValueString(rf.properties.center_point.ToString());
+                                    dup_pipe.LookupParameter("隧道內徑").SetValueString(rf.properties.inner_diameter.ToString());
 
-                                    
-                                    dup_pipe.LookupParameter("Y位置").Set(Y_pos);
-                                    dup_pipe.LookupParameter("X位置").SetValueString(X_pos);
+                                    if (fafacility["數量"] != "1")
+                                    {
+                                        string Y_pos = (double.Parse(fafacility["Y位置"]) + (double.Parse(fafacility["Y範圍"]) * pipe_num / (double.Parse(fafacility["數量"]) - 1))).ToString();
+                                        string X_pos = (double.Parse(fafacility["Y位置"] + rf.properties.center_point) >= rf.properties.inner_diameter / 2)
+                                            ? (double.Parse(fafacility["X位置"]) - double.Parse(fafacility["X範圍"]) * pipe_num / (int.Parse(fafacility["數量"]) - 1)).ToString()
+                                            : (double.Parse(fafacility["X位置"]) + double.Parse(fafacility["X範圍"]) * pipe_num / (int.Parse(fafacility["數量"]) - 1)).ToString();
+
+                                        dup_pipe.LookupParameter("Y位置").Set(Y_pos);
+                                        dup_pipe.LookupParameter("X位置").SetValueString(X_pos);
+                                    }
+                                    else
+                                    {
+                                        string Y_pos = fafacility["Y位置"];
+                                        string X_pos = fafacility["X位置"];
+
+                                        dup_pipe.LookupParameter("Y位置").SetValueString(Y_pos);
+                                        dup_pipe.LookupParameter("X位置").SetValueString(X_pos);
+                                    }
+
+                                    T.Commit();
+                                    // 利用以上建置完成之輪廓建立管線
+                                    T.Start("建置管線");
+                                    SweepProfile pipe_profile = doc.Application.Create.NewFamilySymbolProfile(dup_pipe);
+
+                                    List<ElementId> m_list = new List<ElementId>();
+                                    ReferenceArray sweep_path = new ReferenceArray();
+
+                                    XYZ init_dir = data_list_tunnel[1].start_point - data_list_tunnel[0].start_point;
+                                    XYZ start = data_list_tunnel[0].start_point;
+                                    XYZ fake_pt = data_list_tunnel[0].start_point + init_dir / 100;
+                                    data_list_tunnel[0].start_point = new XYZ(fake_pt.X, fake_pt.Y, start.Z);
+                                    Line fake_path = Line.CreateBound(start, data_list_tunnel[0].start_point);
+                                    ModelCurve fake_curve = doc.FamilyCreate.NewModelCurve(fake_path, Sketch_plain(doc, start, data_list_tunnel[0].start_point));
+                                    m_list.Add(fake_curve.Id);
+                                    sweep_path.Append(fake_curve.GeometryCurve.Reference);
+
+                                    // 依照里程點為建立管線依循線段
+                                    for (int i = 1; i < data_list_tunnel.Count(); i++)
+                                    {
+                                        Line n_single_path = Line.CreateBound(data_list_tunnel[i - 1].start_point, data_list_tunnel[i].start_point);
+                                        ModelCurve m_curve = doc.FamilyCreate.NewModelCurve(n_single_path, Sketch_plain(doc, data_list_tunnel[i - 1].start_point, data_list_tunnel[i].start_point));
+                                        m_list.Add(m_curve.Id);
+                                        sweep_path.Append(m_curve.GeometryCurve.Reference);
+                                    }
+
+                                    // 依照管線走道側與非走道側改變管線位置
+                                    Sweep pipeline = doc.FamilyCreate.NewSweep(true, sweep_path, pipe_profile, 0, ProfilePlaneLocation.Start);
+                                    int turn = 0;
+                                    if (walk_way[count - 1][0] == "右側" && fafacility["側"] == "走道側")
+                                        turn = 1;
+                                    if (walk_way[count - 1][0] == "左側" && fafacility["側"] == "非走道側")
+                                        turn = 1;
+                                    T.Commit();
+
+                                    T.Start("翻轉輪廓");
+                                    dup_pipe.LookupParameter("走道側").Set(turn);
+                                    pipeline.LookupParameter("輪廓翻轉").Set(turn);
+
+                                    doc.Delete(m_list);
                                 }
-                                else
-                                {
-                                    string Y_pos = fafacility["Y位置"];
-                                    string X_pos = fafacility["X位置"];
-
-                                    dup_pipe.LookupParameter("Y位置").SetValueString(Y_pos);
-                                    dup_pipe.LookupParameter("X位置").SetValueString(X_pos);
-                                }
-
-
-                                T.Commit();
-                                // 利用以上建置完成之輪廓建立管線
-                                T.Start("建置管線");
-                                SweepProfile pipe_profile = doc.Application.Create.NewFamilySymbolProfile(dup_pipe);
-                                
-                                List<ElementId> m_list = new List<ElementId>();
-                                ReferenceArray sweep_path = new ReferenceArray();
-
-                                XYZ init_dir = data_list_tunnel[1].start_point - data_list_tunnel[0].start_point;
-                                XYZ start = data_list_tunnel[0].start_point;
-                                XYZ fake_pt = data_list_tunnel[0].start_point + init_dir / 100;
-                                data_list_tunnel[0].start_point = new XYZ(fake_pt.X, fake_pt.Y, start.Z);
-                                Line fake_path = Line.CreateBound(start, data_list_tunnel[0].start_point);
-                                ModelCurve fake_curve = doc.FamilyCreate.NewModelCurve(fake_path, Sketch_plain(doc, start, data_list_tunnel[0].start_point));
-                                m_list.Add(fake_curve.Id);
-                                sweep_path.Append(fake_curve.GeometryCurve.Reference);
-
-                                // 依照里程點為建立管線依循線段
-                                for (int i = 1; i < data_list_tunnel.Count(); i++)
-                                {
-                                    Line n_single_path = Line.CreateBound(data_list_tunnel[i - 1].start_point, data_list_tunnel[i].start_point);
-                                    ModelCurve m_curve = doc.FamilyCreate.NewModelCurve(n_single_path, Sketch_plain(doc, data_list_tunnel[i - 1].start_point, data_list_tunnel[i].start_point));
-                                    m_list.Add(m_curve.Id);
-                                    sweep_path.Append(m_curve.GeometryCurve.Reference);
-                                }
-
-                                // 依照管線走道側與非走道側改變管線位置
-                                Sweep pipeline = doc.FamilyCreate.NewSweep(true, sweep_path, pipe_profile, 0, ProfilePlaneLocation.Start);
-                                int turn = 0;
-                                if (walk_way[count-1][0] == "右側" && fafacility["側"] == "走道側")
-                                    turn = 1;
-                                if (walk_way[count-1][0] == "左側" && fafacility["側"] == "非走道側")
-                                    turn = 1;
-                                T.Commit();
-
-                                T.Start("翻轉輪廓");
-                                dup_pipe.LookupParameter("走道側").Set(turn);
-                                pipeline.LookupParameter("輪廓翻轉").Set(turn);
-
-                                doc.Delete(m_list);
+                                catch (Exception ex) { string error = ex.Message + "\n" + ex.ToString(); }
 
                                 T.Commit();
                             }
-
                         }
                         else
                         {

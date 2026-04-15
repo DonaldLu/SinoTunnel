@@ -133,12 +133,17 @@ namespace SinoTunnel_2020
                     bool isAdd = false;
                     for (int k = 0; k < all_data_list_tunnel[i].Count; k++)
                     {
+                        string toStation = to_station(all_data_list_tunnel[i][k].station);
+                        string walkWayList1 = to_station(walk_way_list[i][j][1]);
+                        string walkWayList2 = to_station(walk_way_list[i][j][2]);
 
-                        if (to_station(all_data_list_tunnel[i][k].station) == walk_way_list[i][j][1])
+                        if (toStation == walkWayList1) // 培文改
+                        //if (to_station(all_data_list_tunnel[i][k].station) == walk_way_list[i][j][1])
                         {
                             isAdd = true;
                         }
-                        else if (to_station(all_data_list_tunnel[i][k].station) == walk_way_list[i][j][2])
+                        else if (toStation == walkWayList2) // 培文改
+                        //else if (to_station(all_data_list_tunnel[i][k].station) == walk_way_list[i][j][2])
                         {
                             isAdd = false;
                             temp.Add(all_data_list_tunnel[i][k]);

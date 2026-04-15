@@ -1580,6 +1580,11 @@ namespace SinoTunnel_2025
                                 if (GetCell(xlRange, 1, j).Value2.ToString() == "走道")
                                 //if(xlRange.Cells[1, j].Value2.ToString() == "走道")
                                 {
+                                    // 培文改
+                                    start_station = GetCell(xlRange, i, j + 1).Value2.ToString();
+                                    end_station = GetCell(xlRange, i, j + 2).Value2.ToString();
+                                    a = new string[] { name, start_station, end_station };
+
                                     setting_Station.walk_way_station.Add(a);
                                 }
                                 else if (GetCell(xlRange, 1, j).Value2.ToString() == "第三軌")
@@ -1673,6 +1678,11 @@ namespace SinoTunnel_2025
                                 if (GetCell(xlRange, 1, j).Value2.ToString() == "走道")
                                 //if (xlRange.Cells[1, j].Value2.ToString() == "走道")
                                 {
+                                    // 培文改
+                                    start_station = GetCell(xlRange, i, j + 1).Value2.ToString();
+                                    end_station = GetCell(xlRange, i, j + 2).Value2.ToString();
+                                    a = new string[] { name, start_station, end_station };
+
                                     setting_Station2.walk_way_station.Add(a);
                                 }
                                 else if (GetCell(xlRange, 1, j).Value2.ToString() == "第三軌")
